@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=MPD Playing
+GenericName=MPD Playing
+Comment=Shows whats playing on MPD
+Keywords=Plaintext;Write;
+Exec=/usr/bin/MPDplaying
+Terminal=false
+Type=Application
+StartupNotify=true
+MimeType=text/plain;
+Icon=/usr/share/pixmaps/mpd-wiki.xpm
+Categories=Utility;Music;
+

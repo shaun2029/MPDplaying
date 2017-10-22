@@ -1,0 +1,72 @@
+object frmSettings: TfrmSettings
+  Left = 549
+  Height = 178
+  Top = 300
+  Width = 416
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Settings'
+  ClientHeight = 178
+  ClientWidth = 416
+  Color = clBlack
+  Position = poMainFormCenter
+  SessionProperties = 'edtHost.Text;edtPort.Text'
+  LCLVersion = '1.2.4.0'
+  object btnPrev: TBitBtn
+    Left = 320
+    Height = 30
+    Top = 136
+    Width = 80
+    Caption = 'Ok'
+    Color = 10748023
+    Font.Color = clWhite
+    ModalResult = 1
+    ParentFont = False
+    TabOrder = 0
+  end
+  object lblHost: TLabel
+    Left = 32
+    Height = 17
+    Top = 32
+    Width = 32
+    Caption = 'Host'
+    Font.Color = clWhite
+    ParentColor = False
+    ParentFont = False
+  end
+  object edtHost: TEdit
+    Left = 80
+    Height = 27
+    Top = 32
+    Width = 232
+    Color = clGray
+    Font.Color = clWhite
+    ParentFont = False
+    TabOrder = 1
+  end
+  object edtPort: TEdit
+    Left = 80
+    Height = 27
+    Top = 72
+    Width = 88
+    Color = clGray
+    Font.Color = clWhite
+    ParentFont = False
+    TabOrder = 2
+  end
+  object lblHost1: TLabel
+    Left = 32
+    Height = 17
+    Top = 72
+    Width = 30
+    Caption = 'Port'
+    Font.Color = clWhite
+    ParentColor = False
+    ParentFont = False
+  end
+  object IniPropStorage1: TIniPropStorage
+    StoredValues = <>
+    left = 10
+    top = 10
+  end
+end

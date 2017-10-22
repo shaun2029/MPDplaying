@@ -1,12 +1,12 @@
 object frmMain: TfrmMain
-  Left = 457
-  Height = 395
-  Top = 252
-  Width = 568
+  Left = 508
+  Height = 472
+  Top = 278
+  Width = 593
   BorderStyle = bsSingle
   Caption = 'MPD Playing'
-  ClientHeight = 372
-  ClientWidth = 568
+  ClientHeight = 449
+  ClientWidth = 593
   Color = clBlack
   Icon.Data = {
     4E530100000001000100879B0000010020003853010016000000280000008700
@@ -2726,15 +2726,17 @@ object frmMain: TfrmMain
     000000000000000000000000000000000000
   }
   Menu = mMenu
+  OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.2.4.0'
+  LCLVersion = '1.6.4.0'
   object mmPlaying: TMemo
     Left = 8
-    Height = 320
+    Height = 384
     Top = 8
-    Width = 552
+    Width = 400
     Color = clBlack
     Font.Color = clWhite
     Font.Height = -19
@@ -2745,9 +2747,9 @@ object frmMain: TfrmMain
     TabOrder = 0
   end
   object btnPrev: TBitBtn
-    Left = 8
+    Left = 256
     Height = 30
-    Top = 336
+    Top = 408
     Width = 144
     Caption = 'PREVIOUS'
     Color = 10748023
@@ -2757,9 +2759,9 @@ object frmMain: TfrmMain
     TabOrder = 1
   end
   object btnNext: TBitBtn
-    Left = 416
+    Left = 432
     Height = 30
-    Top = 336
+    Top = 408
     Width = 144
     Caption = 'NEXT'
     Color = 10748023
@@ -2767,6 +2769,86 @@ object frmMain: TfrmMain
     OnClick = btnNextClick
     ParentFont = False
     TabOrder = 2
+  end
+  object GroupBox1: TGroupBox
+    Left = 424
+    Height = 384
+    Top = 8
+    Width = 155
+    ClientHeight = 380
+    ClientWidth = 151
+    TabOrder = 3
+    object rgpSoft: TRadioGroup
+      Left = 16
+      Height = 153
+      Top = 32
+      Width = 121
+      AutoFill = True
+      Caption = 'Softness'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 1
+      ClientHeight = 134
+      ClientWidth = 117
+      Items.Strings = (
+        'Minimum'
+        'Light'
+        'Medium'
+        'Heavy'
+        'Maximum'
+      )
+      OnSelectionChanged = rgpSoftSelectionChanged
+      TabOrder = 0
+    end
+    object rgpHard: TRadioGroup
+      Left = 16
+      Height = 153
+      Top = 216
+      Width = 121
+      AutoFill = True
+      Caption = 'Hardness'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 1
+      ClientHeight = 134
+      ClientWidth = 117
+      Items.Strings = (
+        'Minimum'
+        'Light'
+        'Medium'
+        'Heavy'
+        'Maximum'
+      )
+      OnSelectionChanged = rgpSoftSelectionChanged
+      TabOrder = 1
+    end
+    object pbLevelHard: TProgressBar
+      Left = 16
+      Height = 20
+      Top = 192
+      Width = 120
+      Max = 18
+      Min = 8
+      Position = 8
+      TabOrder = 2
+    end
+    object pbLevelSoft: TProgressBar
+      Left = 17
+      Height = 20
+      Top = 8
+      Width = 120
+      Max = 12
+      Position = 6
+      TabOrder = 3
+    end
   end
   object tmrPlaying: TTimer
     Interval = 5000

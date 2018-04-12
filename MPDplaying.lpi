@@ -26,6 +26,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="lnet/lib;synapse/source/lib"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -69,7 +70,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="MPDplaying.pas"/>
         <IsPartOfProject Value="True"/>
@@ -89,6 +90,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="webcontrol.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -2824,4 +2824,10 @@ object frmMain: TfrmMain
       OnClick = mnuSettingsClick
     end
   end
+  object tmrWebControl: TTimer
+    Interval = 500
+    OnTimer = tmrWebControlTimer
+    left = 265
+    top = 71
+  end
 end

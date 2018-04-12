@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Menus, IniPropStorage, ComCtrls, Unix, Pipes,
-  Process, Settings, IniFiles;
+  Process, Settings, IniFiles, webcontrol;
 
 type
 
@@ -21,6 +21,7 @@ type
     mnuSettings: TMenuItem;
     mMenu: TMainMenu;
     mmPlaying: TMemo;
+    tmrWebControl: TTimer;
     tmrPlaying: TTimer;
     procedure btnNextClick(Sender: TObject);
     procedure btnPrevClick(Sender: TObject);
@@ -34,7 +35,9 @@ type
     procedure pbLevelSoftContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure rgpMoodSelectionChanged(Sender: TObject);
+    procedure tmrWebControlTimer(Sender: TObject);
   private
+    FWebControl: TSimpleWebControl;
     function GetMPDHostParams: string;
     procedure SaveSettings;
     procedure Update;
@@ -94,6 +97,8 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FWebControl := TSimpleWebControl.Create(8080);
+  tmrWebControl.Enabled := True;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -128,6 +133,8 @@ begin
       mmPlaying.Lines.Insert(0, Output);
       if mmPlaying.Lines.Count > 12 then
         mmPlaying.Lines.Delete(mmPlaying.Lines.Count-1);
+
+      FWebControl.Playing := Self.Caption;
 {
       CommandLine := 'notify-send -t 10000 "Playing: " "' + Output + '"';
       RunCommand(CommandLine, Output);
@@ -218,6 +225,7 @@ end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  FWebControl.Free;
   SaveSettings;
 end;
 
@@ -235,6 +243,37 @@ end;
 procedure TfrmMain.rgpMoodSelectionChanged(Sender: TObject);
 begin
   SaveSettings;
+end;
+
+procedure TfrmMain.tmrWebControlTimer(Sender: TObject);
+var
+  MoodIndex, i: integer;
+  Command: TRemoteCommand;
+begin
+  FWebControl.ProccessConnections;
+
+  Command := FWebControl.Command;
+
+  if Command <> rcomNone then
+  begin
+    case Command of
+      rcomNext: btnNextClick(Self);
+      rcomPrevious: btnPrevClick(Self);
+    end;
+
+    MoodIndex := Ord(Command) - Ord(rcomMoodLight);
+
+    if (MoodIndex >= 0) and (MoodIndex < 6) then
+    begin
+      grpMood.Checked[MoodIndex] := not grpMood.Checked[MoodIndex];
+      SaveSettings;
+    end;
+  end;
+
+  for i := 0 to grpMood.Items.Count - 1 do
+  begin
+    FWebControl.Mood[i] := grpMood.Checked[i];
+  end;
 end;
 
 end.

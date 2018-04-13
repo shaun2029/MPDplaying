@@ -228,8 +228,7 @@ begin
       + '<font size="6">' + CRLF
       + '<h3>RadioGaga ' + UppercaseFirstChar(HostName) +'</h3>' + CRLF
       + '<p id="display" >Updating...</p>' + CRLF
-      + '</font>' + CRLF
-      + '<br>' + CRLF;
+      + '</font>' + CRLF;
 
       if (LocalConnection) then
       begin
@@ -242,98 +241,107 @@ begin
         + '<audio controls src="http://www.immutablefix.co.uk:5588/mpd"></audio>' + CRLF
       end;
 
+      if (uri = '/control?') or (uri = '/control') then
+      begin
+        OutputDataString := OutputDataString
+        + '<br>' + CRLF
+        + '<button id="previous" style="padding: 15px 40px;"><font size="6">< |</font></button>' + CRLF
+        + '<button id="next" style="padding: 15px 40px;"><font size="6">| ></font></button>' + CRLF
+        + '<br>' + CRLF
+        + '<h2>Mood Selection</h2>' + CRLF
+        + '<input type="checkbox" name="light" id="light"><font size="5">Light</font>' + CRLF
+        + '<input type="checkbox" name="mellow" id="mellow"><font size="5">Mellow</font>' + CRLF
+        + '<input type="checkbox" name="rock" id="rock"><font size="5">Rock</font>' + CRLF
+        + '<input type="checkbox" name="rocking" id="rocking"><font size="5">Rocking</font>' + CRLF
+        + '<input type="checkbox" name="moshing" id="moshing"><font size="5">Moshing</font>' + CRLF
+        + '<input type="checkbox" name="death" id="death"><font size="5">Death</font>' + CRLF;
+      end;
+
+        OutputDataString := OutputDataString
+        + '<script>' + CRLF
+        + 'var HttpClient = function() {' + CRLF
+        + '    this.get = function(aUrl, aCallback) {' + CRLF
+        + '        var anHttpRequest = new XMLHttpRequest();' + CRLF
+        + '        anHttpRequest.onreadystatechange = function() {' + CRLF
+        + '            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)' + CRLF
+        + '                aCallback(anHttpRequest.responseText);' + CRLF
+        + '        }' + CRLF
+        + '' + CRLF
+        + '        anHttpRequest.open( "GET", aUrl, true );' + CRLF
+        + '        anHttpRequest.send( null );' + CRLF
+        + '    }' + CRLF
+        + '}' + CRLF
+        + '' + CRLF
+        + 'function updatePlaying() {' + CRLF
+        + '    var client = new HttpClient();' + CRLF
+        + '    client.get(''/playing'', function(response) {' + CRLF
+        + '        document.getElementById("display").innerHTML = response;' + CRLF
+        + '    });' + CRLF
+        + '' + CRLF
+        + '    setTimeout(updatePlaying, 2000);' + CRLF
+        + '}' + CRLF
+        + '' + CRLF
+        + 'setTimeout(updatePlaying,2000);' + CRLF
+        + '' + CRLF;
+
+      if (uri = '/control?') or (uri = '/control') then
+      begin
+        Lock();
+        if (Mood[0]) then
+           OutputDataString := OutputDataString + 'document.getElementById("light").checked = true;' + CRLF
+        else
+            OutputDataString := OutputDataString + 'document.getElementById("light").checked = false;' + CRLF;
+
+        if (Mood[1]) then
+           OutputDataString := OutputDataString + 'document.getElementById("mellow").checked = true;' + CRLF
+        else
+            OutputDataString := OutputDataString + 'document.getElementById("light").checked = false;' + CRLF;
+
+        if (Mood[2]) then
+           OutputDataString := OutputDataString + 'document.getElementById("rock").checked = true;' + CRLF
+        else
+            OutputDataString := OutputDataString + 'document.getElementById("rock").checked = false;' + CRLF;
+
+        if (Mood[3]) then
+           OutputDataString := OutputDataString + 'document.getElementById("rocking").checked = true;' + CRLF
+        else
+            OutputDataString := OutputDataString + 'document.getElementById("rocking").checked = false;' + CRLF;
+
+        if (Mood[4]) then
+           OutputDataString := OutputDataString + 'document.getElementById("moshing").checked = true;' + CRLF
+        else
+            OutputDataString := OutputDataString + 'document.getElementById("moshing").checked = false;' + CRLF;
+
+        if (Mood[5]) then
+           OutputDataString := OutputDataString + 'document.getElementById("death").checked = true;' + CRLF
+        else
+            OutputDataString := OutputDataString + 'document.getElementById("death").checked = false;' + CRLF;
+        Unlock();
+
+        OutputDataString := OutputDataString
+        + '' + CRLF
+        + 'var checkboxs = document.getElementsByTagName("input");' + CRLF
+        + 'var checkboxsCount = checkboxs.length;' + CRLF
+        + 'for (var i = 0; i < checkboxsCount; i += 1) {' + CRLF
+        + '    checkboxs[i].onclick = function(e) {' + CRLF
+        + '        var client = new HttpClient();' + CRLF
+        + '        client.get(''/'' + this.id, function(response) {' + CRLF
+        + '        });' + CRLF
+        + '    };' + CRLF
+        + '}' + CRLF
+        + '' + CRLF
+        + 'var buttons = document.getElementsByTagName("button");' + CRLF
+        + 'var buttonsCount = buttons.length;' + CRLF
+        + 'for (var i = 0; i < buttonsCount; i += 1) {' + CRLF
+        + '    buttons[i].onclick = function(e) {' + CRLF
+        + '        var client = new HttpClient();' + CRLF
+        + '        client.get(''/'' + this.id, function(response) {' + CRLF
+        + '        });' + CRLF
+        + '    };' + CRLF
+        + '}' + CRLF;
+      end;
+
       OutputDataString := OutputDataString
-      + '<br><br>' + CRLF
-      + '<button id="previous" style="padding: 15px 40px;"><font size="6">< |</font></button>' + CRLF
-      + '<button id="next" style="padding: 15px 40px;"><font size="6">| ></font></button>' + CRLF
-      + '<br>' + CRLF
-      + '<h2>Mood Selection</h2>' + CRLF
-      + '<input type="checkbox" name="light" id="light"><font size="5">Light</font>' + CRLF
-      + '<input type="checkbox" name="mellow" id="mellow"><font size="5">Mellow</font>' + CRLF
-      + '<input type="checkbox" name="rock" id="rock"><font size="5">Rock</font>' + CRLF
-      + '<input type="checkbox" name="rocking" id="rocking"><font size="5">Rocking</font>' + CRLF
-      + '<input type="checkbox" name="moshing" id="moshing"><font size="5">Moshing</font>' + CRLF
-      + '<input type="checkbox" name="death" id="death"><font size="5">Death</font>' + CRLF
-      + '<script>' + CRLF
-      + 'var HttpClient = function() {' + CRLF
-      + '    this.get = function(aUrl, aCallback) {' + CRLF
-      + '        var anHttpRequest = new XMLHttpRequest();' + CRLF
-      + '        anHttpRequest.onreadystatechange = function() {' + CRLF
-      + '            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)' + CRLF
-      + '                aCallback(anHttpRequest.responseText);' + CRLF
-      + '        }' + CRLF
-      + '' + CRLF
-      + '        anHttpRequest.open( "GET", aUrl, true );' + CRLF
-      + '        anHttpRequest.send( null );' + CRLF
-      + '    }' + CRLF
-      + '}' + CRLF
-      + '' + CRLF
-      + 'function updatePlaying() {' + CRLF
-      + '    var client = new HttpClient();' + CRLF
-      + '    client.get(''/playing'', function(response) {' + CRLF
-      + '        document.getElementById("display").innerHTML = response;' + CRLF
-      + '    });' + CRLF
-      + '' + CRLF
-      + '    setTimeout(updatePlaying, 2000);' + CRLF
-      + '}' + CRLF
-      + '' + CRLF
-      + 'setTimeout(updatePlaying,2000);' + CRLF
-      + '' + CRLF;
-
-      Lock();
-      if (Mood[0]) then
-         OutputDataString := OutputDataString + 'document.getElementById("light").checked = true;' + CRLF
-      else
-          OutputDataString := OutputDataString + 'document.getElementById("light").checked = false;' + CRLF;
-
-      if (Mood[1]) then
-         OutputDataString := OutputDataString + 'document.getElementById("mellow").checked = true;' + CRLF
-      else
-          OutputDataString := OutputDataString + 'document.getElementById("light").checked = false;' + CRLF;
-
-      if (Mood[2]) then
-         OutputDataString := OutputDataString + 'document.getElementById("rock").checked = true;' + CRLF
-      else
-          OutputDataString := OutputDataString + 'document.getElementById("rock").checked = false;' + CRLF;
-
-      if (Mood[3]) then
-         OutputDataString := OutputDataString + 'document.getElementById("rocking").checked = true;' + CRLF
-      else
-          OutputDataString := OutputDataString + 'document.getElementById("rocking").checked = false;' + CRLF;
-
-      if (Mood[4]) then
-         OutputDataString := OutputDataString + 'document.getElementById("moshing").checked = true;' + CRLF
-      else
-          OutputDataString := OutputDataString + 'document.getElementById("moshing").checked = false;' + CRLF;
-
-      if (Mood[5]) then
-         OutputDataString := OutputDataString + 'document.getElementById("death").checked = true;' + CRLF
-      else
-          OutputDataString := OutputDataString + 'document.getElementById("death").checked = false;' + CRLF;
-
-      Unlock();
-
-      OutputDataString := OutputDataString
-      + '' + CRLF
-      + 'var checkboxs = document.getElementsByTagName("input");' + CRLF
-      + 'var checkboxsCount = checkboxs.length;' + CRLF
-      + 'for (var i = 0; i < checkboxsCount; i += 1) {' + CRLF
-      + '    checkboxs[i].onclick = function(e) {' + CRLF
-      + '        var client = new HttpClient();' + CRLF
-      + '        client.get(''/'' + this.id, function(response) {' + CRLF
-      + '        });' + CRLF
-      + '    };' + CRLF
-      + '}' + CRLF
-      + '' + CRLF
-      + 'var buttons = document.getElementsByTagName("button");' + CRLF
-      + 'var buttonsCount = buttons.length;' + CRLF
-      + 'for (var i = 0; i < buttonsCount; i += 1) {' + CRLF
-      + '    buttons[i].onclick = function(e) {' + CRLF
-      + '        var client = new HttpClient();' + CRLF
-      + '        client.get(''/'' + this.id, function(response) {' + CRLF
-      + '        });' + CRLF
-      + '    };' + CRLF
-      + '}' + CRLF
       + '</script>' + CRLF
       + '</body>' + CRLF
       + '</html>' + CRLF;
@@ -344,7 +352,7 @@ begin
     ASocket.SendString('Content-length: ' + IntTostr(Length(OutputDataString)) + CRLF);
     ASocket.SendString('Connection: close' + CRLF);
     ASocket.SendString('Date: ' + Rfc822DateTime(now) + CRLF);
-    ASocket.SendString('Server: Servidor do Felipe usando Synapse' + CRLF);
+    ASocket.SendString('Server: RadioGaga' + CRLF);
     ASocket.SendString('' + CRLF);
 
     // Write the document back to the browser

@@ -250,6 +250,7 @@ var
   MoodIndex, i: integer;
   Command: TRemoteCommand;
 begin
+  tmrWebControl.Enabled := False;
   FWebControl.ProccessConnections;
 
   Command := FWebControl.Command;
@@ -274,6 +275,8 @@ begin
   begin
     FWebControl.Mood[i] := grpMood.Checked[i];
   end;
+
+  tmrWebControl.Enabled := True;
 end;
 
 end.

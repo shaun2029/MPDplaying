@@ -2825,7 +2825,7 @@ object frmMain: TfrmMain
     end
   end
   object tmrWebControl: TTimer
-    Interval = 500
+    Interval = 200
     OnTimer = tmrWebControlTimer
     left = 265
     top = 71

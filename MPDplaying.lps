@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectSession>
-    <Version Value="10"/>
-    <BuildModes Active="Release"/>
+    <Version Value="11"/>
+    <BuildModes Active="Debug"/>
     <Units Count="6">
       <Unit0>
         <Filename Value="MPDplaying.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="3" Y="9"/>
+        <CursorPos X="16" Y="6"/>
         <UsageCount Value="73"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -19,11 +20,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="252"/>
-        <CursorPos Y="279"/>
+        <TopLine Value="151"/>
+        <CursorPos X="8" Y="165"/>
         <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
         <Filename Value="settings.pas"/>
@@ -33,18 +35,19 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="7"/>
+        <CursorPos X="15" Y="3"/>
         <UsageCount Value="72"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
         <Filename Value="webcontrol.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="144"/>
-        <CursorPos X="11" Y="342"/>
+        <CursorPos X="76" Y="14"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
         <Filename Value="/usr/lib/lazarus/1.8.0/lcl/include/customform.inc"/>
@@ -66,71 +69,71 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="292" TopLine="277"/>
+        <Caret Line="296" TopLine="277"/>
       </Position1>
       <Position2>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="294" TopLine="277"/>
+        <Caret Line="298" TopLine="295"/>
       </Position2>
       <Position3>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="296" TopLine="277"/>
+        <Caret Line="255" Column="87" TopLine="242"/>
       </Position3>
       <Position4>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="298" TopLine="295"/>
+        <Caret Line="248" Column="14" TopLine="236"/>
       </Position4>
       <Position5>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="255" Column="87" TopLine="242"/>
+        <Caret Line="246" Column="76" TopLine="236"/>
       </Position5>
       <Position6>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="248" Column="14" TopLine="236"/>
+        <Caret Line="306" TopLine="292"/>
       </Position6>
       <Position7>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="246" Column="76" TopLine="236"/>
+        <Caret Line="298" TopLine="292"/>
       </Position7>
       <Position8>
         <Filename Value="webcontrol.pas"/>
-        <Caret Line="306" TopLine="292"/>
+        <Caret Line="183" TopLine="169"/>
       </Position8>
       <Position9>
-        <Filename Value="webcontrol.pas"/>
-        <Caret Line="298" TopLine="292"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="264" Column="22" TopLine="247"/>
       </Position9>
       <Position10>
-        <Filename Value="webcontrol.pas"/>
-        <Caret Line="183" TopLine="169"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="259" TopLine="247"/>
       </Position10>
       <Position11>
         <Filename Value="main.pas"/>
-        <Caret Line="264" Column="22" TopLine="247"/>
+        <Caret Line="264" TopLine="247"/>
       </Position11>
       <Position12>
         <Filename Value="main.pas"/>
-        <Caret Line="259" TopLine="247"/>
+        <Caret Line="266" TopLine="247"/>
       </Position12>
       <Position13>
         <Filename Value="main.pas"/>
-        <Caret Line="264" TopLine="247"/>
+        <Caret Line="268" TopLine="247"/>
       </Position13>
       <Position14>
         <Filename Value="main.pas"/>
-        <Caret Line="266" TopLine="247"/>
+        <Caret Line="269" TopLine="247"/>
       </Position14>
       <Position15>
         <Filename Value="main.pas"/>
-        <Caret Line="268" TopLine="247"/>
+        <Caret Line="270" TopLine="247"/>
       </Position15>
       <Position16>
         <Filename Value="main.pas"/>
-        <Caret Line="269" TopLine="247"/>
+        <Caret Line="272" TopLine="248"/>
       </Position16>
       <Position17>
         <Filename Value="main.pas"/>
-        <Caret Line="270" TopLine="247"/>
+        <Caret Line="270" TopLine="248"/>
       </Position17>
       <Position18>
         <Filename Value="main.pas"/>
@@ -173,17 +176,21 @@
         <Caret Line="270" TopLine="248"/>
       </Position27>
       <Position28>
-        <Filename Value="main.pas"/>
-        <Caret Line="272" TopLine="248"/>
+        <Filename Value="webcontrol.pas"/>
+        <Caret Line="347" TopLine="321"/>
       </Position28>
       <Position29>
         <Filename Value="main.pas"/>
-        <Caret Line="270" TopLine="248"/>
+        <Caret Line="279" TopLine="252"/>
       </Position29>
       <Position30>
-        <Filename Value="webcontrol.pas"/>
-        <Caret Line="347" TopLine="321"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="193" Column="78" TopLine="185"/>
       </Position30>
     </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode="default"/>
+    </RunParams>
   </ProjectSession>
 </CONFIG>

@@ -1,11 +1,11 @@
 program MPDplaying;
 
-{$mode objfpc}{$H+}
+{$mode Delphi}
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$IFDEF UNIX}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, main, Settings, webcontrol
   { you can add units after this };

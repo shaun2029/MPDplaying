@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, Buttons, Menus, IniPropStorage, ComCtrls, Unix, Pipes,
+  StdCtrls, ExtCtrls, Buttons, Menus, ComCtrls, Unix,
   Process, Settings, IniFiles, webcontrol;
 
 type
@@ -171,7 +171,8 @@ procedure TfrmMain.SaveSettings;
 var
   Cfg: TIniFile;
   F : TextFile;
-  Min, Max, Soft, Hard, i: integer;
+  Min, Max, i: integer;
+  Soft, Hard: double;
 begin
 
   for i := 0 to grpMood.Items.Count - 1 do
@@ -197,12 +198,12 @@ begin
     if (i >= Min) and (i <= Max) then grpMood.Checked[i] := True;
   end;
 
-  Soft := Min * 3;
-  Hard := (Max + 1) * 3;
+  Soft := Min * 3.5;
+  Hard := (Max + 1) * 3.5;
 
   // Ensure that all music can be played.
-  if Soft <= 0 then
-     Soft := -20;
+  if Soft < 0 then
+     Soft := 0;
 
   AssignFile(f,GetUserDir + '.music-skip');
   Rewrite(f);

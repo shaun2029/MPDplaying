@@ -5,7 +5,7 @@ object frmMain: TfrmMain
   Width = 593
   BorderStyle = bsSingle
   Caption = 'MPD Playing'
-  ClientHeight = 446
+  ClientHeight = 447
   ClientWidth = 593
   Color = clBlack
   Icon.Data = {
@@ -2731,7 +2731,7 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.8.0.4'
+  LCLVersion = '2.0.10.0'
   object mmPlaying: TMemo
     Left = 8
     Height = 384
@@ -2775,8 +2775,8 @@ object frmMain: TfrmMain
     Height = 384
     Top = 8
     Width = 155
-    ClientHeight = 380
-    ClientWidth = 151
+    ClientHeight = 382
+    ClientWidth = 153
     TabOrder = 3
     object grpMood: TCheckGroup
       Left = 8
@@ -2793,8 +2793,8 @@ object frmMain: TfrmMain
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 1
-      ClientHeight = 330
-      ClientWidth = 132
+      ClientHeight = 334
+      ClientWidth = 134
       Items.Strings = (
         'Light'
         'Mellow'
@@ -2813,12 +2813,12 @@ object frmMain: TfrmMain
   object tmrPlaying: TTimer
     Interval = 5000
     OnTimer = tmrPlayingTimer
-    left = 207
-    top = 71
+    Left = 207
+    Top = 71
   end
   object mMenu: TMainMenu
-    left = 236
-    top = 71
+    Left = 236
+    Top = 71
     object mnuSettings: TMenuItem
       Caption = 'Settings'
       OnClick = mnuSettingsClick
@@ -2827,7 +2827,7 @@ object frmMain: TfrmMain
   object tmrWebControl: TTimer
     Interval = 200
     OnTimer = tmrWebControlTimer
-    left = 265
-    top = 71
+    Left = 265
+    Top = 71
   end
 end

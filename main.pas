@@ -14,16 +14,21 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    btnPlayFile: TBitBtn;
     btnPrev: TBitBtn;
     btnNext: TBitBtn;
     grpMood: TCheckGroup;
     GroupBox1: TGroupBox;
+    mmPlaying: TMemo;
+    mmQueued: TMemo;
     mnuSettings: TMenuItem;
     mMenu: TMainMenu;
-    mmPlaying: TMemo;
+    mmPlayedQueue: TMemo;
+    dlgOpenMusicFile: TOpenDialog;
     tmrWebControl: TTimer;
     tmrPlaying: TTimer;
     procedure btnNextClick(Sender: TObject);
+    procedure btnPlayFileClick(Sender: TObject);
     procedure btnPrevClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -37,10 +42,16 @@ type
     procedure rgpMoodSelectionChanged(Sender: TObject);
     procedure tmrWebControlTimer(Sender: TObject);
   private
+    FPlaylist: TStringList;
+    FPlaylistPos: integer;
     FWebControl: TSimpleWebControl;
+    function AddFileToPlaylist(Filename: string): boolean;
     function GetMPDHostParams: string;
+    function GetPlaylist: string;
+    function GetPlaylistPos: integer;
     procedure SaveSettings;
     procedure Update;
+    procedure UpdatePlaylist;
     { private declarations }
   public
     { public declarations }
@@ -85,6 +96,18 @@ begin
   Update;
 end;
 
+procedure TfrmMain.btnPlayFileClick(Sender: TObject);
+begin
+  if dlgOpenMusicFile.Execute then
+  begin
+    if AddFileToPlaylist(dlgOpenMusicFile.FileName) then
+    begin
+      UpdatePlaylist;
+      btnNext.Click;
+    end;
+  end;
+end;
+
 procedure TfrmMain.btnPrevClick(Sender: TObject);
 var
   Output: string;
@@ -97,6 +120,7 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FPlaylist := TStringList.Create;
   FWebControl := TSimpleWebControl.Create(8080);
   tmrWebControl.Enabled := True;
 end;
@@ -113,13 +137,47 @@ begin
   tmrPlaying.Enabled := True;
 end;
 
-procedure TfrmMain.Update;
+function TfrmMain.AddFileToPlaylist(Filename: string): boolean;
 var
   Output: string;
   CommandLine: string;
   Outputs:TStringlist;
 begin
-  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc"';
+  Result := False;
+
+  CommandLine := 'bash -c ''' + GetMPDHostParams + ' mpc insert "file://' + Filename + '"''';
+  if (RunCommand(CommandLine, Output)) and (Output = '') then
+  begin
+    Result := True;
+{
+    Outputs := TStringlist.Create;
+    Outputs.Text := Output;
+    Output := Outputs.Strings[0];
+    FreeAndNil(Outputs);
+
+    if (mmPlayedQueue.Lines.IndexOf(Output) <> 0) then
+    begin
+      Self.Caption := 'Playing: ' + Copy(Output, 1, 60);
+      mmPlayedQueue.Lines.Insert(0, Output);
+      if mmPlayedQueue.Lines.Count > 12 then
+        mmPlayedQueue.Lines.Delete(mmPlayedQueue.Lines.Count-1);
+
+      FWebControl.Playing := Self.Caption;
+}
+{
+      CommandLine := 'notify-send -t 10000 "Playing: " "' + Output + '"';
+      RunCommand(CommandLine, Output);
+}
+  end;
+end;
+
+function TfrmMain.GetPlaylistPos: integer;
+var
+  Output: string;
+  CommandLine: string;
+  Outputs:TStringlist;
+begin
+  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc | grep playing | awk ''{print $2}'' | sed ''s/\/.*//g'' | sed ''s/#//g'' "';
   if (RunCommand(CommandLine, Output)) and (Output<>'') then
   begin
     Outputs := TStringlist.Create;
@@ -127,20 +185,74 @@ begin
     Output := Outputs.Strings[0];
     FreeAndNil(Outputs);
 
-    if (mmPlaying.Lines.IndexOf(Output) <> 0) then
-    begin
-      Self.Caption := 'Playing: ' + Copy(Output, 1, 60);
-      mmPlaying.Lines.Insert(0, Output);
-      if mmPlaying.Lines.Count > 12 then
-        mmPlaying.Lines.Delete(mmPlaying.Lines.Count-1);
-
-      FWebControl.Playing := Self.Caption;
-{
-      CommandLine := 'notify-send -t 10000 "Playing: " "' + Output + '"';
-      RunCommand(CommandLine, Output);
-}
-    end;
+    Result := StrToIntDef(Output, -1);
   end;
+end;
+
+function TfrmMain.GetPlaylist: string;
+var
+  Output: string;
+  CommandLine: string;
+  Outputs:TStringlist;
+begin
+  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc playlist ' + '"';
+  if (RunCommand(CommandLine, Output)) and (Output<>'') then
+  begin
+    Result := Output;
+  end;
+end;
+
+procedure TfrmMain.UpdatePlaylist;
+var
+  Output: string;
+  CommandLine: string;
+  Outputs:TStringlist;
+  i: integer;
+begin
+  FPlaylist.Clear;
+  Update;
+end;
+
+procedure TfrmMain.Update;
+var
+  Output: string;
+  CommandLine: string;
+  Outputs:TStringlist;
+  i: integer;
+begin
+  if FPlaylist.Count = 0 then
+  begin
+    FPlaylist.Text := GetPlaylist;
+  end;
+
+  FPlaylistPos := GetPlaylistPos - 1;
+  mmPlayedQueue.Clear;
+  mmQueued.Clear;
+
+  if (FPlaylistPos >= 0) and (FPlaylistPos < FPlaylist.Count) then
+  begin
+    for i := -10 to -1 do
+    begin
+      if (FPlaylistPos + 1 >= 0) and (FPlaylistPos + 1 < FPlaylist.Count) then
+        mmPlayedQueue.Lines.Append(FPlaylist.Strings[FPlaylistPos + i]);
+    end;
+
+    for i := 1 to 10 do
+    begin
+      if (FPlaylistPos + 1 >= 0) and (FPlaylistPos + 1 < FPlaylist.Count) then
+        mmQueued.Lines.Append(FPlaylist.Strings[FPlaylistPos + i]);
+    end;
+
+    Output := FPlaylist.Strings[FPlaylistPos];
+    Self.Caption := 'Playing: ' + Copy(Output, 1, 60);
+    mmPlaying.Text := Output;
+  end
+  else
+  begin
+    FPlaylist.Text := GetPlaylist;
+  end;
+
+
 end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
@@ -228,6 +340,7 @@ procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   FWebControl.Free;
   SaveSettings;
+  FPlaylist.Free;
 end;
 
 procedure TfrmMain.grpMoodItemClick(Sender: TObject; Index: integer);

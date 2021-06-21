@@ -168,6 +168,10 @@ begin
       CommandLine := 'notify-send -t 10000 "Playing: " "' + Output + '"';
       RunCommand(CommandLine, Output);
 }
+  end
+  else if (Output <> '') then
+  begin
+    MessageDlg('Error: ' + Output, mtError, [mbOK], 0);
   end;
 end;
 

@@ -2826,8 +2826,8 @@ object frmMain: TfrmMain
   end
   object mmPlaying: TMemo
     Left = 8
-    Height = 33
-    Top = 196
+    Height = 38
+    Top = 193
     Width = 552
     Color = clBlack
     Font.Color = clYellow
@@ -2837,7 +2837,6 @@ object frmMain: TfrmMain
     ParentFont = False
     ReadOnly = True
     TabOrder = 5
-    WordWrap = False
   end
   object btnPlayFile: TBitBtn
     Left = 568

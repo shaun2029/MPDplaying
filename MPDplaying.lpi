@@ -72,7 +72,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="6">
       <Unit0>
         <Filename Value="MPDplaying.pas"/>
         <IsPartOfProject Value="True"/>
@@ -96,6 +96,18 @@
         <Filename Value="webcontrol.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="search.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSearch"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Search"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="mpc.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

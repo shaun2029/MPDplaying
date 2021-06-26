@@ -7,13 +7,14 @@ interface
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Menus, ComCtrls, Unix,
-  Process, Settings, IniFiles, webcontrol;
+  Process, Settings, IniFiles, webcontrol, Mpc, Types, Search;
 
 type
 
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    btnSearch: TBitBtn;
     btnPlayFile: TBitBtn;
     btnPrev: TBitBtn;
     btnNext: TBitBtn;
@@ -30,6 +31,9 @@ type
     procedure btnNextClick(Sender: TObject);
     procedure btnPlayFileClick(Sender: TObject);
     procedure btnPrevClick(Sender: TObject);
+    procedure btnSearchClick(Sender: TObject);
+    procedure btnSearchContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -46,9 +50,10 @@ type
     FPlaylistPos: integer;
     FWebControl: TSimpleWebControl;
     function AddFileToPlaylist(Filename: string): boolean;
-    function GetMPDHostParams: string;
     function GetPlaylist: string;
     function GetPlaylistPos: integer;
+    function GetHost: string;
+    function GetPort: string;
     procedure SaveSettings;
     procedure Update;
     procedure UpdatePlaylist;
@@ -66,18 +71,23 @@ implementation
 
 { TfrmMain }
 
-function TfrmMain.GetMPDHostParams: string;
+function TfrmMain.GetHost: string;
 begin
   Result := '';
 
   if (Trim(frmSettings.edtHost.Text) <> '') then
   begin
-    Result := 'MPD_HOST=' + Trim(frmSettings.edtHost.Text);
+    Result := Trim(frmSettings.edtHost.Text);
   end;
+end;
+
+function TfrmMain.GetPort: string;
+begin
+  Result := '';
 
   if (Trim(frmSettings.edtPort.Text) <> '') then
   begin
-    Result := Result + ' MPD_Port=' + Trim(frmSettings.edtPort.Text);
+    Result := Trim(frmSettings.edtPort.Text);
   end;
 end;
 
@@ -87,12 +97,8 @@ begin
 end;
 
 procedure TfrmMain.btnNextClick(Sender: TObject);
-var
-  Output: string;
-  CommandLine: string;
 begin
-  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc next"';
-  RunCommand(CommandLine, Output);
+  MpcNext(GetHost, GetPort);
   Update;
 end;
 
@@ -100,7 +106,7 @@ procedure TfrmMain.btnPlayFileClick(Sender: TObject);
 begin
   if dlgOpenMusicFile.Execute then
   begin
-    if AddFileToPlaylist(dlgOpenMusicFile.FileName) then
+    if MpcAddFileToPlaylist(GetHost, GetPort, dlgOpenMusicFile.FileName) then
     begin
       UpdatePlaylist;
       btnNext.Click;
@@ -109,13 +115,26 @@ begin
 end;
 
 procedure TfrmMain.btnPrevClick(Sender: TObject);
-var
-  Output: string;
-  CommandLine: string;
 begin
-  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc prev"';
-  RunCommand(CommandLine, Output);
+  MpcPrev(GetHost, GetPort);
   Update;
+end;
+
+procedure TfrmMain.btnSearchClick(Sender: TObject);
+var
+  frmSearch: TfrmSearch;
+begin
+  frmSearch := TfrmSearch.Create(Self);
+  frmSearch.Host := GetHost;
+  frmSearch.Port := GetPort;
+  frmSearch.ShowModal;
+  UpdatePlaylist;
+end;
+
+procedure TfrmMain.btnSearchContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -138,80 +157,21 @@ begin
 end;
 
 function TfrmMain.AddFileToPlaylist(Filename: string): boolean;
-var
-  Output: string;
-  CommandLine: string;
-  Outputs:TStringlist;
 begin
-  Result := False;
-
-  CommandLine := 'bash -c ''' + GetMPDHostParams + ' mpc insert "file://' + Filename + '"''';
-  if (RunCommand(CommandLine, Output)) and (Output = '') then
-  begin
-    Result := True;
-{
-    Outputs := TStringlist.Create;
-    Outputs.Text := Output;
-    Output := Outputs.Strings[0];
-    FreeAndNil(Outputs);
-
-    if (mmPlayedQueue.Lines.IndexOf(Output) <> 0) then
-    begin
-      Self.Caption := 'Playing: ' + Copy(Output, 1, 60);
-      mmPlayedQueue.Lines.Insert(0, Output);
-      if mmPlayedQueue.Lines.Count > 12 then
-        mmPlayedQueue.Lines.Delete(mmPlayedQueue.Lines.Count-1);
-
-      FWebControl.Playing := Self.Caption;
-}
-{
-      CommandLine := 'notify-send -t 10000 "Playing: " "' + Output + '"';
-      RunCommand(CommandLine, Output);
-}
-  end
-  else if (Output <> '') then
-  begin
-    MessageDlg('Error: ' + Output, mtError, [mbOK], 0);
-  end;
+  Result := MpcAddFileToPlaylist(GetHost, GetPort, Filename);
 end;
 
 function TfrmMain.GetPlaylistPos: integer;
-var
-  Output: string;
-  CommandLine: string;
-  Outputs:TStringlist;
 begin
-  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc | grep playing | awk ''{print $2}'' | sed ''s/\/.*//g'' | sed ''s/#//g'' "';
-  if (RunCommand(CommandLine, Output)) and (Output<>'') then
-  begin
-    Outputs := TStringlist.Create;
-    Outputs.Text := Output;
-    Output := Outputs.Strings[0];
-    FreeAndNil(Outputs);
-
-    Result := StrToIntDef(Output, -1);
-  end;
+  Result := MpcGetPlaylistPos(GetHost, GetPort);
 end;
 
 function TfrmMain.GetPlaylist: string;
-var
-  Output: string;
-  CommandLine: string;
-  Outputs:TStringlist;
 begin
-  CommandLine := 'bash -c "' + GetMPDHostParams + ' mpc playlist ' + '"';
-  if (RunCommand(CommandLine, Output)) and (Output<>'') then
-  begin
-    Result := Output;
-  end;
+  Result := MpcGetPlaylist(GetHost, GetPort);
 end;
 
 procedure TfrmMain.UpdatePlaylist;
-var
-  Output: string;
-  CommandLine: string;
-  Outputs:TStringlist;
-  i: integer;
 begin
   FPlaylist.Clear;
   Update;
@@ -220,8 +180,6 @@ end;
 procedure TfrmMain.Update;
 var
   Output: string;
-  CommandLine: string;
-  Outputs:TStringlist;
   i: integer;
 begin
   if FPlaylist.Count = 0 then

@@ -2747,7 +2747,7 @@ object frmMain: TfrmMain
     WordWrap = False
   end
   object btnPrev: TBitBtn
-    Left = 72
+    Left = 8
     Height = 30
     Top = 416
     Width = 155
@@ -2759,7 +2759,7 @@ object frmMain: TfrmMain
     TabOrder = 1
   end
   object btnNext: TBitBtn
-    Left = 320
+    Left = 192
     Height = 30
     Top = 416
     Width = 155
@@ -2849,6 +2849,18 @@ object frmMain: TfrmMain
     OnClick = btnPlayFileClick
     ParentFont = False
     TabOrder = 6
+  end
+  object btnSearch: TBitBtn
+    Left = 376
+    Height = 30
+    Top = 416
+    Width = 155
+    Caption = 'SEARCH'
+    Color = 10748023
+    Font.Color = clWhite
+    OnClick = btnSearchClick
+    ParentFont = False
+    TabOrder = 7
   end
   object tmrPlaying: TTimer
     Interval = 5000

@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, runtimetypeinfocontrols, main, Settings, webcontrol
+  Forms, runtimetypeinfocontrols, main, Settings, webcontrol, Search, mpc
   { you can add units after this };
 
 {$R *.res}
@@ -17,6 +17,7 @@ begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmSettings, frmSettings);
+  Application.CreateForm(TfrmSearch, frmSearch);
   Application.Run;
 end.
 

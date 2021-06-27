@@ -54,7 +54,7 @@ begin
   lstResults.Clear;
   for i := 0 to Results.Count - 1 do
   begin
-    lstResults.AddItem(Results.Strings[i], nil);
+    lstResults.Items.Add(Results.Strings[i]);
   end;
   Results.Free;
 end;
@@ -84,16 +84,29 @@ end;
 
 procedure TfrmSearch.btnAddClick(Sender: TObject);
 var
-  i: Integer;
+  i, Count: Integer;
 begin
+  Count := 0;
+
   if lstResults.SelCount > 0 then
   begin
-    for i := lstResults.SelCount -1 downto 0 do
+    for i := lstResults.Count -1 downto 0 do
     begin
-      if MpcAddTrackToPlaylist(Host, Port, lstResults.GetSelectedText) then
-        MessageDlg('Added: ' + lstResults.GetSelectedText, mtInformation, [mbOK], 0);
+      if lstResults.Selected[i] then
+      begin
+        if MpcAddTrackToPlaylist(Host, Port, lstResults.Items.Strings[i]) then
+        begin
+          Inc(Count);
+        end
+        else Break;
+      end;
     end;
   end;
+
+  if (lstResults.SelCount = Count) and (lstResults.SelCount = 1) then
+    MessageDlg('Added: ' + lstResults.GetSelectedText, mtInformation, [mbOK], 0)
+  else
+    MessageDlg('Added: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
 end;
 
 procedure TfrmSearch.btnClearClick(Sender: TObject);

@@ -74,6 +74,7 @@ object frmSearch: TfrmSearch
     Top = 152
     Width = 848
     ItemHeight = 0
+    MultiSelect = True
     OnDblClick = lstResultsDblClick
     OnSelectionChange = lstResultsSelectionChange
     ScrollWidth = 846

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Menus, ComCtrls, Unix,
-  Process, Settings, IniFiles, webcontrol, Mpc, Types, Search;
+  Process, Settings, IniFiles, webcontrol, Mpc, Types, PlayList;
 
 type
 
@@ -195,13 +195,13 @@ begin
   begin
     for i := -10 to -1 do
     begin
-      if (FPlaylistPos + 1 >= 0) and (FPlaylistPos + 1 < FPlaylist.Count) then
+      if (FPlaylistPos + i >= 0) and (FPlaylistPos + i < FPlaylist.Count) then
         mmPlayedQueue.Lines.Append(FPlaylist.Strings[FPlaylistPos + i]);
     end;
 
     for i := 1 to 10 do
     begin
-      if (FPlaylistPos + 1 >= 0) and (FPlaylistPos + 1 < FPlaylist.Count) then
+      if (FPlaylistPos + i >= 0) and (FPlaylistPos + i < FPlaylist.Count) then
         mmQueued.Lines.Append(FPlaylist.Strings[FPlaylistPos + i]);
     end;
 

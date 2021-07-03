@@ -1,0 +1,209 @@
+object frmSearch: TfrmSearch
+  Left = 2277
+  Height = 520
+  Top = 241
+  Width = 1233
+  Caption = 'Playlist'
+  ClientHeight = 520
+  ClientWidth = 1233
+  Color = clBlack
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.10.0'
+  object GroupBox1: TGroupBox
+    Left = 8
+    Height = 136
+    Top = 8
+    Width = 616
+    Caption = 'Search'
+    ClientHeight = 118
+    ClientWidth = 614
+    TabOrder = 0
+    object edtArtist: TEdit
+      Left = 24
+      Height = 33
+      Top = 32
+      Width = 200
+      OnKeyPress = edtArtistKeyPress
+      TabOrder = 0
+    end
+    object Label1: TLabel
+      Left = 32
+      Height = 15
+      Top = 9
+      Width = 30
+      Caption = 'Artist'
+      ParentColor = False
+    end
+    object edtTitle: TEdit
+      Left = 264
+      Height = 33
+      Top = 32
+      Width = 344
+      OnKeyPress = edtArtistKeyPress
+      TabOrder = 1
+    end
+    object Label2: TLabel
+      Left = 272
+      Height = 15
+      Top = 9
+      Width = 24
+      Caption = 'Title'
+      ParentColor = False
+    end
+    object btnClear: TButton
+      Left = 144
+      Height = 25
+      Top = 80
+      Width = 75
+      Caption = 'Clear'
+      OnClick = btnClearClick
+      TabOrder = 2
+    end
+    object btnSearch: TButton
+      Left = 24
+      Height = 25
+      Top = 80
+      Width = 75
+      Caption = 'Search'
+      OnClick = btnSearchClick
+      TabOrder = 3
+    end
+  end
+  object btnQueuePlaylist: TButton
+    Left = 1110
+    Height = 25
+    Top = 488
+    Width = 115
+    Caption = 'Queue Playlist'
+    ModalResult = 1
+    OnClick = btnQueuePlaylistClick
+    TabOrder = 1
+  end
+  object Playlist: TGroupBox
+    Left = 632
+    Height = 472
+    Top = 8
+    Width = 593
+    Caption = 'Playlist'
+    ClientHeight = 454
+    ClientWidth = 591
+    TabOrder = 2
+    object lstPlaylist: TListBox
+      Left = 8
+      Height = 408
+      Top = 8
+      Width = 576
+      ItemHeight = 0
+      MultiSelect = True
+      PopupMenu = mnuPlayList
+      ScrollWidth = 574
+      TabOrder = 0
+      TopIndex = -1
+    end
+    object btnSave: TButton
+      Left = 288
+      Height = 25
+      Top = 424
+      Width = 75
+      Caption = 'Save'
+      OnClick = btnSaveClick
+      TabOrder = 1
+    end
+    object btnLoad: TButton
+      Left = 400
+      Height = 25
+      Top = 424
+      Width = 75
+      Caption = 'Load'
+      OnClick = btnLoadClick
+      TabOrder = 2
+    end
+    object btnShuffle: TButton
+      Left = 8
+      Height = 25
+      Top = 424
+      Width = 75
+      Caption = 'Shuffle'
+      OnClick = btnShuffleClick
+      TabOrder = 3
+    end
+    object btnClearPlaylist: TButton
+      Left = 509
+      Height = 25
+      Top = 424
+      Width = 75
+      Caption = 'Clear'
+      OnClick = btnClearPlaylistClick
+      TabOrder = 4
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Height = 328
+    Top = 152
+    Width = 616
+    Caption = 'Search Results'
+    ClientHeight = 310
+    ClientWidth = 614
+    TabOrder = 3
+    object lstResults: TListBox
+      Left = 8
+      Height = 264
+      Top = 8
+      Width = 600
+      ItemHeight = 0
+      MultiSelect = True
+      OnDblClick = lstResultsDblClick
+      OnSelectionChange = lstResultsSelectionChange
+      ScrollWidth = 598
+      TabOrder = 0
+      TopIndex = -1
+    end
+    object btnAdd: TButton
+      Left = 488
+      Height = 25
+      Top = 280
+      Width = 120
+      Caption = 'Add to Playlist'
+      Enabled = False
+      OnClick = btnAddClick
+      TabOrder = 1
+    end
+    object btnImportList: TButton
+      Left = 8
+      Height = 25
+      Top = 280
+      Width = 131
+      Caption = 'Import Song List'
+      OnClick = btnImportListClick
+      TabOrder = 2
+    end
+  end
+  object dlgOpen: TOpenDialog
+    Left = 368
+    Top = 191
+  end
+  object dlgSave: TSaveDialog
+    Left = 424
+    Top = 191
+  end
+  object mnuPlayList: TPopupMenu
+    Left = 784
+    Top = 152
+    object mitmDelete: TMenuItem
+      Caption = 'Remove'
+      OnClick = mitmDeleteClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object mitmSort: TMenuItem
+      Caption = 'Sort'
+      OnClick = mitmSortClick
+    end
+    object mitmShuffle: TMenuItem
+      Caption = 'Shuffle'
+      OnClick = btnShuffleClick
+    end
+  end
+end

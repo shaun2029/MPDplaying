@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, runtimetypeinfocontrols, main, Settings, webcontrol, Search, mpc
+  Forms, runtimetypeinfocontrols, main, Settings, webcontrol, PlayList, mpc
   { you can add units after this };
 
 {$R *.res}

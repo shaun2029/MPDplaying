@@ -155,6 +155,7 @@ object frmSearch: TfrmSearch
       MultiSelect = True
       OnDblClick = lstResultsDblClick
       OnSelectionChange = lstResultsSelectionChange
+      PopupMenu = mnuSearchResults
       ScrollWidth = 598
       TabOrder = 0
       TopIndex = -1
@@ -204,6 +205,28 @@ object frmSearch: TfrmSearch
     object mitmShuffle: TMenuItem
       Caption = 'Shuffle'
       OnClick = btnShuffleClick
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object mitmQueueSelectedPlaylistTracks: TMenuItem
+      Caption = 'Queue Selected Tracks'
+      OnClick = mitmQueueSelectedPlaylistTracksClick
+    end
+  end
+  object mnuSearchResults: TPopupMenu
+    Left = 160
+    Top = 200
+    object mitmAddToPlaylist: TMenuItem
+      Caption = 'Add To Playlist'
+      OnClick = mitmAddToPlaylistClick
+    end
+    object MenuItem1: TMenuItem
+      Caption = '--'
+    end
+    object mitmQueueTrack: TMenuItem
+      Caption = 'Queue Track'
+      OnClick = mitmQueueTrackClick
     end
   end
 end

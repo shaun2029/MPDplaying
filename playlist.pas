@@ -28,6 +28,11 @@ type
     lstPlaylist: TListBox;
     lstResults: TListBox;
     dlgOpen: TOpenDialog;
+    MenuItem1: TMenuItem;
+    mitmQueueSelectedPlaylistTracks: TMenuItem;
+    N2: TMenuItem;
+    mitmQueueTrack: TMenuItem;
+    mitmAddToPlaylist: TMenuItem;
     mitmShuffle: TMenuItem;
     mitmSort: TMenuItem;
     N1: TMenuItem;
@@ -37,6 +42,7 @@ type
     Label2: TLabel;
     dlgSave: TSaveDialog;
     mnuPlayList: TPopupMenu;
+    mnuSearchResults: TPopupMenu;
     procedure btnAddClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure btnClearPlaylistClick(Sender: TObject);
@@ -49,7 +55,10 @@ type
     procedure edtArtistKeyPress(Sender: TObject; var Key: char);
     procedure lstResultsDblClick(Sender: TObject);
     procedure lstResultsSelectionChange(Sender: TObject; User: boolean);
+    procedure mitmAddToPlaylistClick(Sender: TObject);
     procedure mitmDeleteClick(Sender: TObject);
+    procedure mitmQueueSelectedPlaylistTracksClick(Sender: TObject);
+    procedure mitmQueueTrackClick(Sender: TObject);
     procedure mitmSortClick(Sender: TObject);
   private
 
@@ -99,10 +108,10 @@ begin
     end;
   end;
 
-  if (lstResults.SelCount = Count) and (lstResults.SelCount = 1) then
+  if (lstPlaylist.SelCount = Count) and (lstResults.SelCount = 1) then
     MessageDlg('Added: ' + lstResults.GetSelectedText, mtInformation, [mbOK], 0)
   else
-    MessageDlg('Added: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
+    MessageDlg('Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
 end;
 
 procedure TfrmSearch.btnShuffleClick(Sender: TObject);
@@ -189,6 +198,22 @@ begin
   btnAdd.Enabled := lstResults.SelCount > 0;
 end;
 
+procedure TfrmSearch.mitmAddToPlaylistClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  if lstResults.SelCount > 0 then
+  begin
+    for i := 0 to lstResults.Count -1 do
+    begin
+      if lstResults.Selected[i] then
+      begin
+        lstPlaylist.Items.Append(lstResults.Items[i]);
+      end;
+    end;
+  end;
+end;
+
 procedure TfrmSearch.mitmDeleteClick(Sender: TObject);
 var
   i: Integer;
@@ -203,6 +228,60 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmSearch.mitmQueueSelectedPlaylistTracksClick(Sender: TObject);
+var
+  i, Count: Integer;
+begin
+  Count := 0;
+
+  if lstPlayList.Count > 0 then
+  begin
+    for i := lstPlayList.Count - 1 downto 0 do
+    begin
+      if lstPlayList.Selected[i] then
+      begin
+        if MpcAddTrackToPlaylist(Host, Port, lstPlayList.Items.Strings[i]) then
+        begin
+          Inc(Count);
+        end
+        else Break;
+      end;
+    end;
+  end;
+
+  if (lstPlayList.SelCount = Count) and (lstPlayList.SelCount = 1) then
+    MessageDlg('Queued: ' + lstPlayList.GetSelectedText, mtInformation, [mbOK], 0)
+  else
+    MessageDlg('Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
+end;
+
+procedure TfrmSearch.mitmQueueTrackClick(Sender: TObject);
+var
+  i, Count: Integer;
+begin
+  Count := 0;
+
+  if lstResults.Count > 0 then
+  begin
+    for i := lstResults.Count - 1 downto 0 do
+    begin
+      if lstResults.Selected[i] then
+      begin
+        if MpcAddTrackToPlaylist(Host, Port, lstResults.Items.Strings[i]) then
+        begin
+          Inc(Count);
+        end
+        else Break;
+      end;
+    end;
+  end;
+
+  if (lstResults.SelCount = Count) and (lstResults.SelCount = 1) then
+    MessageDlg('Queued: ' + lstResults.GetSelectedText, mtInformation, [mbOK], 0)
+  else
+    MessageDlg('Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
 end;
 
 procedure TfrmSearch.mitmSortClick(Sender: TObject);

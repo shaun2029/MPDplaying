@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Menus, ComCtrls, Unix,
-  Process, Settings, IniFiles, webcontrol, Mpc, Types, PlayList;
+  Process, Settings, IniFiles, webcontrol, Mpc, Types, PlayList, LCLType;
 
 type
 
@@ -32,9 +32,9 @@ type
     procedure btnPlayFileClick(Sender: TObject);
     procedure btnPrevClick(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
-    procedure btnSearchContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure grpMoodItemClick(Sender: TObject; Index: integer);
@@ -131,17 +131,34 @@ begin
   UpdatePlaylist;
 end;
 
-procedure TfrmMain.btnSearchContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
-begin
-
-end;
-
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   FPlaylist := TStringList.Create;
   FWebControl := TSimpleWebControl.Create(8080);
   tmrWebControl.Enabled := True;
+end;
+
+procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_LEFT) or (Key = VK_UP) then
+    btnPrevClick(Self)
+  else if (Key = VK_RIGHT) or (Key = VK_DOWN) then
+    btnNextClick(Self);
+end;
+
+procedure TfrmMain.FormKeyPress(Sender: TObject; var Key: char);
+begin
+  if Lowercase(Key) = 'p' then
+  begin
+    btnSearchClick(Self);
+    Key := #0;
+  end
+  else if Lowercase(Key) = 'n' then
+  begin
+    btnNextClick(Self);
+    Key := #0;
+  end;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);

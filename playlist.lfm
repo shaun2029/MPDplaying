@@ -1,5 +1,5 @@
 object frmSearch: TfrmSearch
-  Left = 2277
+  Left = 205
   Height = 520
   Top = 241
   Width = 1233
@@ -7,20 +7,22 @@ object frmSearch: TfrmSearch
   ClientHeight = 520
   ClientWidth = 1233
   Color = clBlack
+  KeyPreview = True
+  OnKeyDown = FormKeyDown
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.4.0'
   object GroupBox1: TGroupBox
     Left = 8
     Height = 136
     Top = 8
     Width = 616
     Caption = 'Search'
-    ClientHeight = 118
-    ClientWidth = 614
+    ClientHeight = 117
+    ClientWidth = 612
     TabOrder = 0
     object edtArtist: TEdit
       Left = 24
-      Height = 33
+      Height = 27
       Top = 32
       Width = 200
       OnKeyPress = edtArtistKeyPress
@@ -28,15 +30,15 @@ object frmSearch: TfrmSearch
     end
     object Label1: TLabel
       Left = 32
-      Height = 15
+      Height = 17
       Top = 9
-      Width = 30
+      Width = 39
       Caption = 'Artist'
       ParentColor = False
     end
     object edtTitle: TEdit
       Left = 264
-      Height = 33
+      Height = 27
       Top = 32
       Width = 344
       OnKeyPress = edtArtistKeyPress
@@ -44,9 +46,9 @@ object frmSearch: TfrmSearch
     end
     object Label2: TLabel
       Left = 272
-      Height = 15
+      Height = 17
       Top = 9
-      Width = 24
+      Width = 30
       Caption = 'Title'
       ParentColor = False
     end
@@ -85,8 +87,8 @@ object frmSearch: TfrmSearch
     Top = 8
     Width = 593
     Caption = 'Playlist'
-    ClientHeight = 454
-    ClientWidth = 591
+    ClientHeight = 453
+    ClientWidth = 589
     TabOrder = 2
     object lstPlaylist: TListBox
       Left = 8
@@ -143,8 +145,8 @@ object frmSearch: TfrmSearch
     Top = 152
     Width = 616
     Caption = 'Search Results'
-    ClientHeight = 310
-    ClientWidth = 614
+    ClientHeight = 309
+    ClientWidth = 612
     TabOrder = 3
     object lstResults: TListBox
       Left = 8
@@ -154,6 +156,7 @@ object frmSearch: TfrmSearch
       ItemHeight = 0
       MultiSelect = True
       OnDblClick = lstResultsDblClick
+      OnKeyPress = lstResultsKeyPress
       OnSelectionChange = lstResultsSelectionChange
       PopupMenu = mnuSearchResults
       ScrollWidth = 598
@@ -181,16 +184,16 @@ object frmSearch: TfrmSearch
     end
   end
   object dlgOpen: TOpenDialog
-    Left = 368
-    Top = 191
+    left = 368
+    top = 191
   end
   object dlgSave: TSaveDialog
-    Left = 424
-    Top = 191
+    left = 424
+    top = 191
   end
   object mnuPlayList: TPopupMenu
-    Left = 784
-    Top = 152
+    left = 784
+    top = 152
     object mitmDelete: TMenuItem
       Caption = 'Remove'
       OnClick = mitmDeleteClick
@@ -215,8 +218,8 @@ object frmSearch: TfrmSearch
     end
   end
   object mnuSearchResults: TPopupMenu
-    Left = 160
-    Top = 200
+    left = 160
+    top = 200
     object mitmAddToPlaylist: TMenuItem
       Caption = 'Add To Playlist'
       OnClick = mitmAddToPlaylistClick

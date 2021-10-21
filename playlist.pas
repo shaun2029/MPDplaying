@@ -5,7 +5,8 @@ unit PlayList;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, MPC;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, MPC,
+  LCLType;
 
 type
 
@@ -53,7 +54,9 @@ type
     procedure btnShuffleClick(Sender: TObject);
     procedure btnImportListClick(Sender: TObject);
     procedure edtArtistKeyPress(Sender: TObject; var Key: char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure lstResultsDblClick(Sender: TObject);
+    procedure lstResultsKeyPress(Sender: TObject; var Key: char);
     procedure lstResultsSelectionChange(Sender: TObject; User: boolean);
     procedure mitmAddToPlaylistClick(Sender: TObject);
     procedure mitmDeleteClick(Sender: TObject);
@@ -185,12 +188,42 @@ begin
   if Key = #13 then
   begin
     btnSearch.Click;
+
+    if lstResults.Items.Count > 0 then
+      lstResults.SetFocus;
+
+    Key := #0;
+  end;
+end;
+
+procedure TfrmSearch.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_ESCAPE then
+  begin
+    Key := 0;
+    Close;
   end;
 end;
 
 procedure TfrmSearch.lstResultsDblClick(Sender: TObject);
 begin
   btnAdd.Click;
+end;
+
+procedure TfrmSearch.lstResultsKeyPress(Sender: TObject; var Key: char);
+begin
+  if (Key = #32) then
+  begin
+    Key := #0;
+    mitmQueueTrackClick(Self);
+  end
+  else if (Key = #13) then
+  begin
+    Key := #0;
+    mitmQueueTrackClick(Self);
+    Close;
+  end;
 end;
 
 procedure TfrmSearch.lstResultsSelectionChange(Sender: TObject; User: boolean);
@@ -251,10 +284,8 @@ begin
     end;
   end;
 
-  if (lstPlayList.SelCount = Count) and (lstPlayList.SelCount = 1) then
-    MessageDlg('Queued: ' + lstPlayList.GetSelectedText, mtInformation, [mbOK], 0)
-  else
-    MessageDlg('Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
+  if (lstPlayList.SelCount <> Count) then
+    MessageDlg('Not All Tracks Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
 end;
 
 procedure TfrmSearch.mitmQueueTrackClick(Sender: TObject);
@@ -278,10 +309,16 @@ begin
     end;
   end;
 
-  if (lstResults.SelCount = Count) and (lstResults.SelCount = 1) then
-    MessageDlg('Queued: ' + lstResults.GetSelectedText, mtInformation, [mbOK], 0)
+  if (lstResults.SelCount <> Count) then
+    MessageDlg('Not All Tracks Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
   else
-    MessageDlg('Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
+  begin
+    lstResults.Enabled := False;
+    Application.ProcessMessages;
+    Sleep(500);
+    lstResults.Enabled := True;
+    lstResults.SetFocus;
+  end;
 end;
 
 procedure TfrmSearch.mitmSortClick(Sender: TObject);

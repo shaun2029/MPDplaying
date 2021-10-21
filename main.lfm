@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
-  Left = 2429
+  Left = 462
   Height = 508
-  Top = 296
+  Top = 196
   Width = 733
   BorderStyle = bsSingle
   Caption = 'MPD Playing'
-  ClientHeight = 483
+  ClientHeight = 485
   ClientWidth = 733
   Color = clBlack
   Icon.Data = {
@@ -2725,13 +2725,16 @@ object frmMain: TfrmMain
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000
   }
+  KeyPreview = True
   Menu = mMenu
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.4.0'
   object mmPlayedQueue: TMemo
     Left = 8
     Height = 176
@@ -2775,8 +2778,8 @@ object frmMain: TfrmMain
     Height = 384
     Top = 8
     Width = 155
-    ClientHeight = 382
-    ClientWidth = 153
+    ClientHeight = 380
+    ClientWidth = 151
     TabOrder = 3
     object grpMood: TCheckGroup
       Left = 8
@@ -2793,8 +2796,8 @@ object frmMain: TfrmMain
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 1
-      ClientHeight = 334
-      ClientWidth = 134
+      ClientHeight = 333
+      ClientWidth = 132
       Items.Strings = (
         'Light'
         'Mellow'
@@ -2865,12 +2868,12 @@ object frmMain: TfrmMain
   object tmrPlaying: TTimer
     Interval = 5000
     OnTimer = tmrPlayingTimer
-    Left = 207
-    Top = 71
+    left = 207
+    top = 71
   end
   object mMenu: TMainMenu
-    Left = 236
-    Top = 71
+    left = 236
+    top = 71
     object mnuSettings: TMenuItem
       Caption = 'Settings'
       OnClick = mnuSettingsClick
@@ -2879,13 +2882,13 @@ object frmMain: TfrmMain
   object tmrWebControl: TTimer
     Interval = 200
     OnTimer = tmrWebControlTimer
-    Left = 265
-    Top = 71
+    left = 265
+    top = 71
   end
   object dlgOpenMusicFile: TOpenDialog
     DefaultExt = '.Music|*.mp3'
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
-    Left = 208
-    Top = 104
+    left = 208
+    top = 104
   end
 end

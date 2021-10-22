@@ -55,7 +55,11 @@ type
     procedure btnImportListClick(Sender: TObject);
     procedure edtArtistKeyPress(Sender: TObject; var Key: char);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure lstPlaylistKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure lstResultsDblClick(Sender: TObject);
+    procedure lstResultsKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure lstResultsKeyPress(Sender: TObject; var Key: char);
     procedure lstResultsSelectionChange(Sender: TObject; User: boolean);
     procedure mitmAddToPlaylistClick(Sender: TObject);
@@ -190,7 +194,10 @@ begin
     btnSearch.Click;
 
     if lstResults.Items.Count > 0 then
+    begin
       lstResults.SetFocus;
+      lstResults.Selected[0] := True;
+    end;
 
     Key := #0;
   end;
@@ -206,9 +213,23 @@ begin
   end;
 end;
 
+procedure TfrmSearch.lstPlaylistKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_LEFT) then
+    mitmDeleteClick(Self)
+end;
+
 procedure TfrmSearch.lstResultsDblClick(Sender: TObject);
 begin
   btnAdd.Click;
+end;
+
+procedure TfrmSearch.lstResultsKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_RIGHT) then
+    mitmAddToPlaylistClick(Self)
 end;
 
 procedure TfrmSearch.lstResultsKeyPress(Sender: TObject; var Key: char);

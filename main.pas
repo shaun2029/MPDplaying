@@ -20,6 +20,7 @@ type
     btnNext: TBitBtn;
     grpMood: TCheckGroup;
     GroupBox1: TGroupBox;
+    lblVersion: TLabel;
     mmPlaying: TMemo;
     mmQueued: TMemo;
     mnuSettings: TMenuItem;
@@ -55,12 +56,15 @@ type
     function GetHost: string;
     function GetPort: string;
     procedure SaveSettings;
-    procedure Update;
+    procedure UpdatePlaying;
     procedure UpdatePlaylist;
     { private declarations }
   public
     { public declarations }
   end;
+
+const
+  VERSION='v1.0.0';
 
 var
   frmMain: TfrmMain;
@@ -93,13 +97,13 @@ end;
 
 procedure TfrmMain.tmrPlayingTimer(Sender: TObject);
 begin
-  Update;
+  UpdatePlaying;
 end;
 
 procedure TfrmMain.btnNextClick(Sender: TObject);
 begin
   MpcNext(GetHost, GetPort);
-  Update;
+  UpdatePlaying;
 end;
 
 procedure TfrmMain.btnPlayFileClick(Sender: TObject);
@@ -117,7 +121,7 @@ end;
 procedure TfrmMain.btnPrevClick(Sender: TObject);
 begin
   MpcPrev(GetHost, GetPort);
-  Update;
+  UpdatePlaying;
 end;
 
 procedure TfrmMain.btnSearchClick(Sender: TObject);
@@ -136,6 +140,7 @@ begin
   FPlaylist := TStringList.Create;
   FWebControl := TSimpleWebControl.Create(8080);
   tmrWebControl.Enabled := True;
+  lblVersion.Caption := VERSION;
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
@@ -163,7 +168,7 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
-  Update;
+  UpdatePlaying;
 end;
 
 procedure TfrmMain.mnuSettingsClick(Sender: TObject);
@@ -191,12 +196,12 @@ end;
 procedure TfrmMain.UpdatePlaylist;
 begin
   FPlaylist.Clear;
-  Update;
+  UpdatePlaying;
 end;
 
-procedure TfrmMain.Update;
+procedure TfrmMain.UpdatePlaying;
 var
-  Output: string;
+  Output, CurrentTrackName: string;
   i: integer;
 begin
   if FPlaylist.Count = 0 then
@@ -225,13 +230,21 @@ begin
     Output := FPlaylist.Strings[FPlaylistPos];
     Self.Caption := 'Playing: ' + Copy(Output, 1, 60);
     mmPlaying.Text := Output;
+
+    CurrentTrackName := MpcGetPlayingTrackName(GetHost, GetPort);
+
+    { Check that the playing song is correct. }
+    if Pos(Output, CurrentTrackName) <> 1 then
+    begin
+      { Clear playlist so next update will refresh the playlist. }
+      FPlaylist.Clear;
+    end;
   end
   else
   begin
-    FPlaylist.Text := GetPlaylist;
+    { Clear playlist so next update will refresh the playlist. }
+    FPlaylist.Clear;
   end;
-
-
 end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);

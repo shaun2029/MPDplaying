@@ -31,6 +31,8 @@ type
 
   { TMusicPlayer }
 
+  { TVolumeControl }
+
   TVolumeControl  = class
   private
     FControlType: TVolumeControlType;
@@ -46,8 +48,10 @@ type
 
     procedure VolumeUp;
     procedure VolumeDown;
-
     function GetVolume: integer;
+    procedure Mute;
+    procedure ToggleMute;
+    procedure UnMute;
   published
   end;
 
@@ -152,6 +156,45 @@ begin
       Result := StrToIntDef(Output, 50);
     end;
   end;
+end;
+
+procedure TVolumeControl.ToggleMute;
+var
+  Output: string;
+  CommandLine: string;
+begin
+  if FControlType = vcPulse then
+    CommandLine := 'amixer -D pulse set ''' + FMixerControl + ''' 1+ toggle'
+  else
+    CommandLine := 'amixer set ''' + FMixerControl + ''' 1+ toggle';
+
+  RunCommand(CommandLine, Output);
+end;
+
+procedure TVolumeControl.Mute;
+var
+  Output: string;
+  CommandLine: string;
+begin
+  if FControlType = vcPulse then
+    CommandLine := 'amixer -D pulse set ''' + FMixerControl + ''' 1+ off'
+  else
+    CommandLine := 'amixer set ''' + FMixerControl + ''' 1+ off';
+
+  RunCommand(CommandLine, Output);
+end;
+
+procedure TVolumeControl.UnMute;
+var
+  Output: string;
+  CommandLine: string;
+begin
+  if FControlType = vcPulse then
+    CommandLine := 'amixer -D pulse set ''' + FMixerControl + ''' 1+ on'
+  else
+    CommandLine := 'amixer set ''' + FMixerControl + ''' 1+ on';
+
+  RunCommand(CommandLine, Output);
 end;
 
 end.

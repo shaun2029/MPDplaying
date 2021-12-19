@@ -57,6 +57,8 @@ type
     function GetHost: string;
     function GetPort: string;
     procedure SaveSettings;
+    procedure ToggleMute;
+    procedure UnMute;
     procedure UpdatePlaying;
     procedure UpdatePlaylist;
     procedure SetVolume(Up: boolean);
@@ -102,9 +104,28 @@ begin
   UpdatePlaying;
 end;
 
+procedure TfrmMain.UnMute;
+var
+  Volume: TVolumeControl;
+begin
+  Volume := TVolumeControl.Create('Master', vcPulse);
+  Volume.UnMute;
+  Volume.Free;
+end;
+
+procedure TfrmMain.ToggleMute;
+var
+  Volume: TVolumeControl;
+begin
+  Volume := TVolumeControl.Create('Master', vcPulse);
+  Volume.ToggleMute;
+  Volume.Free;
+end;
+
 procedure TfrmMain.btnNextClick(Sender: TObject);
 begin
   MpcNext(GetHost, GetPort);
+  UnMute;
   UpdatePlaying;
 end;
 
@@ -123,6 +144,7 @@ end;
 procedure TfrmMain.btnPrevClick(Sender: TObject);
 begin
   MpcPrev(GetHost, GetPort);
+  UnMute;
   UpdatePlaying;
 end;
 
@@ -167,7 +189,12 @@ begin
   begin
     SetVolume(False);
     Key := 0;
-  end;
+  end
+  else if (Key = VK_SPACE) then
+  begin
+    ToggleMute;
+    Key := 0;
+  end
 end;
 
 procedure TfrmMain.FormKeyPress(Sender: TObject; var Key: char);
@@ -222,6 +249,7 @@ var
   Volume: TVolumeControl;
 begin
   Volume := TVolumeControl.Create('Master', vcPulse);
+  Volume.UnMute;
   if Up then
     Volume.VolumeUp
   else

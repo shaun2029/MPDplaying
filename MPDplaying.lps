@@ -19,11 +19,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="139"/>
-        <CursorPos X="24" Y="155"/>
+        <TopLine Value="168"/>
+        <CursorPos X="26" Y="193"/>
         <UsageCount Value="90"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="settings.pas"/>
@@ -72,8 +71,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="VolumeControl"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="30"/>
-        <CursorPos Y="57"/>
+        <TopLine Value="170"/>
+        <CursorPos X="18" Y="192"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit6>
@@ -113,126 +112,122 @@
         <UsageCount Value="11"/>
       </Unit11>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
-        <Filename Value="main.pas"/>
-        <Caret Line="270" Column="27" TopLine="256"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="60" Column="89" TopLine="34"/>
       </Position1>
       <Position2>
-        <Filename Value="main.pas"/>
-        <Caret Line="61" Column="16" TopLine="47"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="65" Column="15" TopLine="49"/>
       </Position2>
       <Position3>
-        <Filename Value="main.pas"/>
-        <Caret Line="211" Column="33" TopLine="206"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="136" TopLine="112"/>
       </Position3>
       <Position4>
-        <Filename Value="main.pas"/>
-        <Caret Line="11" Column="3"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="128" Column="18" TopLine="112"/>
       </Position4>
       <Position5>
         <Filename Value="volumecontrol.pas"/>
-        <Caret Line="45" Column="44" TopLine="39"/>
+        <Caret Line="146" Column="18" TopLine="131"/>
       </Position5>
       <Position6>
         <Filename Value="volumecontrol.pas"/>
-        <Caret Line="23" Column="33"/>
+        <Caret Line="147" Column="33" TopLine="131"/>
       </Position6>
       <Position7>
-        <Filename Value="main.pas"/>
-        <Caret Line="136" Column="40" TopLine="128"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="146" Column="26" TopLine="131"/>
       </Position7>
       <Position8>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="23" Column="26" TopLine="7"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="222" Column="33" TopLine="200"/>
       </Position8>
       <Position9>
         <Filename Value="main.pas"/>
-        <Caret Line="158" Column="14" TopLine="142"/>
+        <Caret Line="60" Column="28" TopLine="45"/>
       </Position9>
       <Position10>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="34" Column="15" TopLine="16"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="100" Column="20" TopLine="88"/>
       </Position10>
       <Position11>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="48" Column="61" TopLine="28"/>
+        <Filename Value="main.pas"/>
       </Position11>
       <Position12>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="65" Column="32" TopLine="50"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="62" Column="22" TopLine="37"/>
       </Position12>
       <Position13>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="36" Column="37" TopLine="29"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="156" Column="12" TopLine="130"/>
       </Position13>
       <Position14>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="60" Column="89" TopLine="34"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="158" Column="12" TopLine="132"/>
       </Position14>
       <Position15>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="65" Column="15" TopLine="49"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="208" Column="29" TopLine="196"/>
       </Position15>
       <Position16>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="136" TopLine="112"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="222" Column="39" TopLine="196"/>
       </Position16>
       <Position17>
-        <Filename Value="volumecontrol.pas"/>
-        <Caret Line="128" Column="18" TopLine="112"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="62" Column="24" TopLine="47"/>
       </Position17>
       <Position18>
         <Filename Value="volumecontrol.pas"/>
-        <Caret Line="146" Column="18" TopLine="131"/>
+        <Caret Line="57" TopLine="30"/>
       </Position18>
       <Position19>
         <Filename Value="volumecontrol.pas"/>
-        <Caret Line="147" Column="33" TopLine="131"/>
+        <Caret Line="157" Column="31" TopLine="144"/>
       </Position19>
       <Position20>
         <Filename Value="volumecontrol.pas"/>
-        <Caret Line="146" Column="26" TopLine="131"/>
+        <Caret Line="197" Column="47" TopLine="174"/>
       </Position20>
       <Position21>
         <Filename Value="main.pas"/>
-        <Caret Line="222" Column="33" TopLine="200"/>
+        <Caret Line="163" Column="11" TopLine="142"/>
       </Position21>
       <Position22>
         <Filename Value="main.pas"/>
-        <Caret Line="60" Column="28" TopLine="45"/>
+        <Caret Line="158" Column="17" TopLine="143"/>
       </Position22>
       <Position23>
         <Filename Value="main.pas"/>
-        <Caret Line="100" Column="20" TopLine="88"/>
+        <Caret Line="182" Column="17" TopLine="156"/>
       </Position23>
       <Position24>
         <Filename Value="main.pas"/>
+        <Caret Line="404" Column="29" TopLine="378"/>
       </Position24>
       <Position25>
         <Filename Value="main.pas"/>
-        <Caret Line="62" Column="22" TopLine="37"/>
+        <Caret Line="33" Column="27" TopLine="17"/>
       </Position25>
       <Position26>
         <Filename Value="main.pas"/>
-        <Caret Line="156" Column="12" TopLine="130"/>
+        <Caret Line="117" Column="52" TopLine="99"/>
       </Position26>
       <Position27>
-        <Filename Value="main.pas"/>
-        <Caret Line="158" Column="12" TopLine="132"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="199" TopLine="169"/>
       </Position27>
       <Position28>
-        <Filename Value="main.pas"/>
-        <Caret Line="208" Column="29" TopLine="196"/>
+        <Filename Value="volumecontrol.pas"/>
+        <Caret Line="169" Column="14" TopLine="150"/>
       </Position28>
       <Position29>
         <Filename Value="main.pas"/>
-        <Caret Line="222" Column="39" TopLine="196"/>
+        <Caret Line="116" Column="30" TopLine="99"/>
       </Position29>
-      <Position30>
-        <Filename Value="main.pas"/>
-        <Caret Line="62" Column="24" TopLine="47"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Menus, ComCtrls, Unix,
-  Process, Settings, IniFiles, webcontrol, Mpc, Types, PlayList, LCLType;
+  Process, Settings, IniFiles, webcontrol, Mpc, Types, PlayList, LCLType,
+  VolumeControl;
 
 type
 
@@ -58,6 +59,7 @@ type
     procedure SaveSettings;
     procedure UpdatePlaying;
     procedure UpdatePlaylist;
+    procedure SetVolume(Up: boolean);
     { private declarations }
   public
     { public declarations }
@@ -146,10 +148,26 @@ end;
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if (Key = VK_LEFT) or (Key = VK_UP) then
-    btnPrevClick(Self)
-  else if (Key = VK_RIGHT) or (Key = VK_DOWN) then
+  if (Key = VK_LEFT) then
+  begin
+    btnPrevClick(Self);
+    Key := 0;
+  end
+  else if (Key = VK_RIGHT) then
+  begin
     btnNextClick(Self);
+    Key := 0;
+  end
+  else if (Key = VK_UP) then
+  begin
+    SetVolume(True);
+    Key := 0;
+  end
+  else if (Key = VK_DOWN) then
+  begin
+    SetVolume(False);
+    Key := 0;
+  end;
 end;
 
 procedure TfrmMain.FormKeyPress(Sender: TObject; var Key: char);
@@ -197,6 +215,24 @@ procedure TfrmMain.UpdatePlaylist;
 begin
   FPlaylist.Clear;
   UpdatePlaying;
+end;
+
+procedure TfrmMain.SetVolume(Up: boolean);
+var
+  Volume: TVolumeControl;
+begin
+  Volume := TVolumeControl.Create('Master', vcPulse);
+  if Up then
+    Volume.VolumeUp
+  else
+    Volume.VolumeDown;
+
+  { Reset update playing timer. }
+  tmrPlaying.Enabled := False;
+  tmrPlaying.Enabled := True;
+
+  mmPlaying.Text := Format('Vol: %d %%', [Volume.GetVolume]);
+  Volume.Free;
 end;
 
 procedure TfrmMain.UpdatePlaying;

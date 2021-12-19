@@ -105,7 +105,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="8">
       <Unit0>
         <Filename Value="MPDplaying.pas"/>
         <IsPartOfProject Value="True"/>
@@ -141,6 +141,15 @@
         <Filename Value="mpc.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="volumecontrol.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="VolumeControl"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="mpd.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

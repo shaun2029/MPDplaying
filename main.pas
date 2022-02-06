@@ -68,7 +68,7 @@ type
   end;
 
 const
-  VERSION='v1.0.0';
+  VERSION='v1.0.1';
 
 var
   frmMain: TfrmMain;
@@ -169,6 +169,8 @@ end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+  F: TextFile;
 begin
   if (Key = VK_LEFT) then
   begin
@@ -192,7 +194,13 @@ begin
   end
   else if (Key = VK_SPACE) then
   begin
-    ToggleMute;
+    try
+      AssignFile(f, '/tmp/music.pause');
+      Rewrite(f);
+      CloseFile(f);
+    except
+      on E: Exception do;
+    end;
     Key := 0;
   end
 end;

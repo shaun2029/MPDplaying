@@ -2868,7 +2868,7 @@ object frmMain: TfrmMain
     Height = 30
     Top = 416
     Width = 155
-    Caption = 'PLAYLIST'
+    Caption = 'SEARCH + PLAYLIST'
     Color = 10748023
     Font.Color = clWhite
     OnClick = btnSearchClick

@@ -16,8 +16,8 @@ object frmSearch: TfrmSearch
     Height = 568
     Top = 8
     Width = 816
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Search'

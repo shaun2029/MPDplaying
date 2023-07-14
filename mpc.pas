@@ -110,14 +110,30 @@ function MpcSearch(Host, Port, Artist, Title: string): string;
 var
   Output: string;
   CommandLine: string;
-  Outputs:TStringlist;
 begin
   Result := '';
 
-  CommandLine := 'bash -c "' + MpcGetMPDHostParams(Host, Port) + ' mpc search artist ''' + artist + ''' title ''' + Title + '''"';
-  if (RunCommand(CommandLine, Output)) and (Output<>'') then
+  Artist := Trim(StringReplace(Artist, '''', '\''', [rfReplaceAll]));
+  Title := Trim(StringReplace(Title, '''', '\''', [rfReplaceAll]));
+
+  Artist := StringReplace(Artist, '"', '\"', [rfReplaceAll]);
+  Title := StringReplace(Title, '"', '\"', [rfReplaceAll]);
+
+  CommandLine := '';
+
+  If Length(Artist) > 0 then
+    CommandLine := CommandLine +  ' ''artist'' ''' + Artist + ''' ';
+
+  If Length(Title) > 0 then
+    CommandLine := CommandLine +  ' ''title'' ''' + Title + ''' ';
+
+  if CommandLine <> '' then
   begin
-    Result := Output;
+    CommandLine := 'bash -c "' + MpcGetMPDHostParams(Host, Port) + ' mpc search ' + CommandLine + '"';
+    if (RunCommand(CommandLine, Output)) and (Output<>'') then
+    begin
+      Result := Output;
+    end;
   end;
 end;
 

@@ -1,12 +1,12 @@
 unit PlayList;
 
-{$mode objfpc}{$H+}
+{$mode Delphi}
 
 interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, MPC,
-  LCLType;
+  LCLType, ComCtrls;
 
 type
 
@@ -14,21 +14,23 @@ type
 
   TfrmSearch = class(TForm)
     btnAdd: TButton;
-    btnImportList: TButton;
-    btnSave: TButton;
-    btnLoad: TButton;
     btnClear: TButton;
     btnClearPlaylist: TButton;
-    btnShuffle: TButton;
-    btnSearch: TButton;
+    btnImportList: TButton;
+    btnLoad: TButton;
     btnQueuePlaylist: TButton;
+    btnSave: TButton;
+    btnSearch: TButton;
+    btnShuffle: TButton;
     edtArtist: TEdit;
     edtTitle: TEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    dlgOpen: TOpenDialog;
     lstPlaylist: TListBox;
     lstResults: TListBox;
-    dlgOpen: TOpenDialog;
     MenuItem1: TMenuItem;
     mitmQueueSelectedPlaylistTracks: TMenuItem;
     N2: TMenuItem;
@@ -38,12 +40,14 @@ type
     mitmSort: TMenuItem;
     N1: TMenuItem;
     mitmDelete: TMenuItem;
-    Playlist: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
+    PageControl1: TPageControl;
     dlgSave: TSaveDialog;
     mnuPlayList: TPopupMenu;
     mnuSearchResults: TPopupMenu;
+    Playlist: TGroupBox;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure btnClearPlaylistClick(Sender: TObject);
@@ -68,9 +72,11 @@ type
     procedure mitmQueueTrackClick(Sender: TObject);
     procedure mitmSortClick(Sender: TObject);
   private
+    FQueueUpdated: boolean;
 
   public
     Host, Port: string;
+    function IsQueueUpdated: boolean;
   end;
 
 var
@@ -114,6 +120,8 @@ begin
       else Break;
     end;
   end;
+
+  FQueueUpdated := True;
 
   if (lstPlaylist.SelCount = Count) and (lstResults.SelCount = 1) then
     MessageDlg('Added: ' + lstResults.GetSelectedText, mtInformation, [mbOK], 0)
@@ -305,6 +313,8 @@ begin
     end;
   end;
 
+  FQueueUpdated := True;
+
   if (lstPlayList.SelCount <> Count) then
     MessageDlg('Not All Tracks Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
 end;
@@ -330,6 +340,8 @@ begin
     end;
   end;
 
+  FQueueUpdated := True;
+
   if (lstResults.SelCount <> Count) then
     MessageDlg('Not All Tracks Queued: ' + IntToStr(Count) + ' tracks.', mtInformation, [mbOK], 0)
   else
@@ -346,6 +358,17 @@ procedure TfrmSearch.mitmSortClick(Sender: TObject);
 begin
   lstPlaylist.Sorted := True;
   lstPlaylist.Sorted := False;
+end;
+
+function TfrmSearch.IsQueueUpdated: boolean;
+begin
+  Result := FQueueUpdated;
+  FQueueUpdated := False;
+end;
+
+procedure TfrmSearch.FormCreate(Sender: TObject);
+begin
+  FQueueUpdated := False;
 end;
 
 procedure TfrmSearch.btnAddClick(Sender: TObject);

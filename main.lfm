@@ -1,12 +1,12 @@
 object frmMain: TfrmMain
-  Left = 462
+  Left = 2432
   Height = 480
-  Top = 196
-  Width = 733
+  Top = 262
+  Width = 836
   BorderStyle = bsSingle
   Caption = 'MPD Playing'
   ClientHeight = 455
-  ClientWidth = 733
+  ClientWidth = 836
   Color = clBlack
   Icon.Data = {
     4E530100000001000100879B0000010020003853010016000000280000008700
@@ -2730,16 +2730,17 @@ object frmMain: TfrmMain
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.2.0.4'
   object mmPlayedQueue: TMemo
     Left = 8
     Height = 176
     Top = 16
-    Width = 552
+    Width = 664
     Color = clBlack
     Font.Color = clWhite
     Font.Height = 14
@@ -2774,7 +2775,7 @@ object frmMain: TfrmMain
     TabOrder = 2
   end
   object GroupBox1: TGroupBox
-    Left = 568
+    Left = 672
     Height = 392
     Top = 16
     Width = 155
@@ -2814,12 +2815,11 @@ object frmMain: TfrmMain
     end
     object lblVersion: TLabel
       Left = 112
-      Height = 12
+      Height = 14
       Top = 375
       Width = 29
       Caption = 'v1.1.0'
       Font.Height = 10
-      ParentColor = False
       ParentFont = False
     end
   end
@@ -2827,7 +2827,7 @@ object frmMain: TfrmMain
     Left = 8
     Height = 176
     Top = 232
-    Width = 552
+    Width = 664
     Color = clBlack
     Font.Color = clWhite
     Font.Height = 14
@@ -2841,7 +2841,7 @@ object frmMain: TfrmMain
     Left = 8
     Height = 38
     Top = 193
-    Width = 552
+    Width = 664
     Color = clBlack
     Font.Color = clYellow
     Font.Height = 14
@@ -2852,7 +2852,7 @@ object frmMain: TfrmMain
     TabOrder = 5
   end
   object btnPlayFile: TBitBtn
-    Left = 568
+    Left = 672
     Height = 30
     Top = 416
     Width = 155
@@ -2864,7 +2864,7 @@ object frmMain: TfrmMain
     TabOrder = 6
   end
   object btnSearch: TBitBtn
-    Left = 376
+    Left = 488
     Height = 30
     Top = 416
     Width = 155

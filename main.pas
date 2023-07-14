@@ -35,6 +35,7 @@ type
     procedure btnPrevClick(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
@@ -51,6 +52,8 @@ type
     FPlaylist: TStringList;
     FPlaylistPos: integer;
     FWebControl: TSimpleWebControl;
+    frmSearch: TfrmSearch;
+
     function AddFileToPlaylist(Filename: string): boolean;
     function GetPlaylist: string;
     function GetPlaylistPos: integer;
@@ -68,7 +71,7 @@ type
   end;
 
 const
-  VERSION='v1.0.1';
+  VERSION='v1.0.2';
 
 var
   frmMain: TfrmMain;
@@ -101,7 +104,14 @@ end;
 
 procedure TfrmMain.tmrPlayingTimer(Sender: TObject);
 begin
-  UpdatePlaying;
+  if Assigned(frmSearch) then
+  begin
+    if frmSearch.IsQueueUpdated then
+      UpdatePlaylist
+    else
+      UpdatePlaying;
+  end
+  else  UpdatePlaying;
 end;
 
 procedure TfrmMain.UnMute;
@@ -149,22 +159,33 @@ begin
 end;
 
 procedure TfrmMain.btnSearchClick(Sender: TObject);
-var
-  frmSearch: TfrmSearch;
 begin
-  frmSearch := TfrmSearch.Create(Self);
-  frmSearch.Host := GetHost;
-  frmSearch.Port := GetPort;
-  frmSearch.ShowModal;
-  UpdatePlaylist;
+  if not Assigned(frmSearch) then
+  begin
+    frmSearch := TfrmSearch.Create(Self);
+    frmSearch.Host := GetHost;
+    frmSearch.Port := GetPort;
+  end;
+
+  frmSearch.Show;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   FPlaylist := TStringList.Create;
-  FWebControl := TSimpleWebControl.Create(8080);
+  FWebControl := TSimpleWebControl.Create(8088);
   tmrWebControl.Enabled := True;
   lblVersion.Caption := VERSION;
+  frmSearch := nil;
+end;
+
+procedure TfrmMain.FormDestroy(Sender: TObject);
+begin
+  if Assigned(frmSearch) then
+  begin
+    frmSearch.Close;
+    frmSearch.Free;
+  end;
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;

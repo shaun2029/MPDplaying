@@ -308,13 +308,13 @@ begin
 
   if (FPlaylistPos >= 0) and (FPlaylistPos < FPlaylist.Count) then
   begin
-    for i := -10 to -1 do
+    for i := -8 to -1 do
     begin
       if (FPlaylistPos + i >= 0) and (FPlaylistPos + i < FPlaylist.Count) then
         mmPlayedQueue.Lines.Append(FPlaylist.Strings[FPlaylistPos + i]);
     end;
 
-    for i := 1 to 10 do
+    for i := 1 to 8 do
     begin
       if (FPlaylistPos + i >= 0) and (FPlaylistPos + i < FPlaylist.Count) then
         mmQueued.Lines.Append(FPlaylist.Strings[FPlaylistPos + i]);

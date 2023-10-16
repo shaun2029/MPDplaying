@@ -2735,7 +2735,7 @@ object frmMain: TfrmMain
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.2.4.0'
   object mmPlayedQueue: TMemo
     Left = 8
     Height = 176
@@ -2743,7 +2743,7 @@ object frmMain: TfrmMain
     Width = 664
     Color = clBlack
     Font.Color = clWhite
-    Font.Height = 14
+    Font.Height = -15
     Font.Name = 'Sans'
     ParentFont = False
     ReadOnly = True
@@ -2820,6 +2820,7 @@ object frmMain: TfrmMain
       Width = 29
       Caption = 'v1.1.0'
       Font.Height = 10
+      ParentColor = False
       ParentFont = False
     end
   end
@@ -2830,7 +2831,7 @@ object frmMain: TfrmMain
     Width = 664
     Color = clBlack
     Font.Color = clWhite
-    Font.Height = 14
+    Font.Height = -15
     Font.Name = 'Sans'
     ParentFont = False
     ReadOnly = True
@@ -2844,7 +2845,7 @@ object frmMain: TfrmMain
     Width = 664
     Color = clBlack
     Font.Color = clYellow
-    Font.Height = 14
+    Font.Height = -15
     Font.Name = 'Sans'
     Font.Style = [fsBold]
     ParentFont = False

@@ -19,8 +19,8 @@ type
     btnPlayFile: TBitBtn;
     btnPrev: TBitBtn;
     btnNext: TBitBtn;
-    grpMood: TCheckGroup;
     GroupBox1: TGroupBox;
+    grpMood: TCheckGroup;
     lblVersion: TLabel;
     mmPlaying: TMemo;
     mmQueued: TMemo;
@@ -71,7 +71,7 @@ type
   end;
 
 const
-  VERSION='v1.0.2';
+  VERSION='v1.1.1';
 
 var
   frmMain: TfrmMain;
@@ -347,8 +347,8 @@ var
 begin
   try
     Cfg := TIniFile.Create(GetUserDir + '.music-skip.conf');
-    Min := Cfg.ReadInteger('Settings', 'Min', 1);
-    Max := Cfg.ReadInteger('Settings', 'Max', 3);
+    Min := Cfg.ReadInteger('Settings', 'Min', 6);
+    Max := Cfg.ReadInteger('Settings', 'Max', 14);
 
     Cfg.Free;
   except
@@ -395,12 +395,23 @@ begin
     if (i >= Min) and (i <= Max) then grpMood.Checked[i] := True;
   end;
 
-  Soft := Min * 3.5;
-  Hard := (Max + 1) * 3.5;
+  case Min of
+    0: Soft := 0;
+    1: Soft := 4;
+    2: Soft := 6;
+    3: Soft := 8;
+    4: Soft := 10;
+    else Soft := 12;
+  end;
 
-  // Ensure that all music can be played.
-  if Soft < 0 then
-     Soft := 0;
+  case Max of
+    0: Hard := 10;
+    1: Hard := 12;
+    2: Hard := 14;
+    3: Hard := 15;
+    4: Hard := 16;
+    else Hard := 20;
+  end;
 
   AssignFile(f,GetUserDir + '.music-skip');
   Rewrite(f);

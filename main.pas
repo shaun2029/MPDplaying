@@ -20,8 +20,10 @@ type
     btnPrev: TBitBtn;
     btnNext: TBitBtn;
     GroupBox1: TGroupBox;
-    grpMood: TCheckGroup;
+    grpMood: TRadioGroup;
+    grpMoodRange: TRadioGroup;
     lblVersion: TLabel;
+    lblMood: TLabel;
     mmPlaying: TMemo;
     mmQueued: TMemo;
     mnuSettings: TMenuItem;
@@ -71,7 +73,7 @@ type
   end;
 
 const
-  VERSION='v1.1.1';
+  VERSION='v1.2.0';
 
 var
   frmMain: TfrmMain;
@@ -347,8 +349,8 @@ var
 begin
   try
     Cfg := TIniFile.Create(GetUserDir + '.music-skip.conf');
-    Min := Cfg.ReadInteger('Settings', 'Min', 6);
-    Max := Cfg.ReadInteger('Settings', 'Max', 14);
+    grpMood.ItemIndex := Cfg.ReadInteger('Settings', 'Mood', 0);
+    grpMoodRange.ItemIndex := Cfg.ReadInteger('Settings', 'Range', 0);
 
     Cfg.Free;
   except
@@ -357,60 +359,70 @@ begin
       ShowMessage('Exception: ' + E.Message);
     end;
   end;
-
-  for i := 0 to grpMood.Items.Count - 1 do
-  begin
-    if (i >= Min) and (i <= Max) then grpMood.Checked[i] := True;
-  end;
 end;
 
 procedure TfrmMain.SaveSettings;
 var
   Cfg: TIniFile;
   F : TextFile;
-  Min, Max, i: integer;
+  Min, Max, i, Mood, Range: integer;
   Soft, Hard: double;
 begin
 
-  for i := 0 to grpMood.Items.Count - 1 do
-  begin
-    if grpMood.Checked[i] then
+  Mood := grpMood.ItemIndex;
+  Range := grpMoodRange.ItemIndex;
+
+  case Mood of
+    0:
     begin
-      Min := i;
-      Break;
+      case Range of
+        0: begin Soft := 0; Hard := 6; end;
+        1: begin Soft := 0; Hard := 10; end;
+        2: begin Soft := 0; Hard := 12; end;
+        3: begin Soft := 0; Hard := 14; end;
+        else begin Soft := 0; Hard := 20; end;
+      end;
     end;
-  end;
-
-  for i := grpMood.Items.Count - 1 downto 0 do
-  begin
-    if grpMood.Checked[i] then
+    1:
     begin
-      Max := i;
-      Break;
+      case Range of
+        0: begin Soft := 6; Hard := 10; end;
+        1: begin Soft := 6; Hard := 12; end;
+        2: begin Soft := 6; Hard := 14; end;
+        3: begin Soft := 6; Hard := 15; end;
+        else begin Soft := 6; Hard := 20; end;
+      end;
     end;
-  end;
-
-  for i := 0 to grpMood.Items.Count - 1 do
-  begin
-    if (i >= Min) and (i <= Max) then grpMood.Checked[i] := True;
-  end;
-
-  case Min of
-    0: Soft := 0;
-    1: Soft := 4;
-    2: Soft := 6;
-    3: Soft := 8;
-    4: Soft := 10;
-    else Soft := 12;
-  end;
-
-  case Max of
-    0: Hard := 10;
-    1: Hard := 12;
-    2: Hard := 14;
-    3: Hard := 15;
-    4: Hard := 16;
-    else Hard := 20;
+    2:
+    begin
+      case Range of
+        0: begin Soft := 8; Hard := 12; end;
+        1: begin Soft := 10; Hard := 14; end;
+        2: begin Soft := 10; Hard := 15; end;
+        3: begin Soft := 10; Hard := 16; end;
+        else begin Soft := 10; Hard := 20; end;
+      end;
+    end;
+    3:
+    begin
+      case Range of
+        0: begin Soft := 10; Hard := 14; end;
+        1: begin Soft := 11; Hard := 15; end;
+        2: begin Soft := 12; Hard := 16; end;
+        3: begin Soft := 12; Hard := 17; end;
+        else begin Soft := 12; Hard := 20; end;
+      end;
+    end;
+    else
+    begin
+      case Range of
+        0: begin Soft := 11; Hard := 15; end;
+        1: begin Soft := 12; Hard := 16; end;
+        2: begin Soft := 13; Hard := 17; end;
+        3: begin Soft := 14; Hard := 18; end;
+        else begin Soft := 15; Hard := 20; end;
+      end;
+    end;
   end;
 
   AssignFile(f,GetUserDir + '.music-skip');
@@ -419,10 +431,12 @@ begin
   WriteLn(f, FloatToStr(Hard));
   CloseFile(f);
 
+  lblMood.Caption := Format('%d, %d', [Round(Soft), Round(Hard)]);
+
   try
     Cfg := TIniFile.Create(GetUserDir + '.music-skip.conf');
-    Cfg.WriteInteger('Settings', 'Min', Min);
-    Cfg.WriteInteger('Settings', 'Max', Max);
+    Cfg.WriteInteger('Settings', 'Mood', grpMood.ItemIndex);
+    Cfg.WriteInteger('Settings', 'Range', grpMoodRange.ItemIndex);
     Cfg.Free;
   except
     on E: Exception do
@@ -476,14 +490,17 @@ begin
 
     if (MoodIndex >= 0) and (MoodIndex < 6) then
     begin
-      grpMood.Checked[MoodIndex] := not grpMood.Checked[MoodIndex];
+      case MoodIndex of
+        0: begin grpMood.ItemIndex := 0; grpMoodRange.ItemIndex := 2; end;
+        1: begin grpMood.ItemIndex := 1; grpMoodRange.ItemIndex := 2; end;
+        2: begin grpMood.ItemIndex := 2; grpMoodRange.ItemIndex := 2; end;
+        3: begin grpMood.ItemIndex := 3; grpMoodRange.ItemIndex := 2; end;
+        4: begin grpMood.ItemIndex := 4; grpMoodRange.ItemIndex := 2; end;
+        else begin grpMood.ItemIndex := 4; grpMoodRange.ItemIndex := 3; end;
+      end;
+
       SaveSettings;
     end;
-  end;
-
-  for i := 0 to grpMood.Items.Count - 1 do
-  begin
-    FWebControl.Mood[i] := grpMood.Checked[i];
   end;
 
   tmrWebControl.Enabled := True;

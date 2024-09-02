@@ -179,6 +179,9 @@
       <VerifyObjMethodCallValidity Value="True"/>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3"/>
+      </Debugging>
       <LinkSmart Value="True"/>
       <Options>
         <Win32>

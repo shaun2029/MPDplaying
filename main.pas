@@ -22,6 +22,8 @@ type
     GroupBox1: TGroupBox;
     grpMood: TRadioGroup;
     grpMoodRange: TRadioGroup;
+    Label1: TLabel;
+    Label2: TLabel;
     lblVersion: TLabel;
     lblMood: TLabel;
     mmPlaying: TMemo;
@@ -30,6 +32,7 @@ type
     mMenu: TMainMenu;
     mmPlayedQueue: TMemo;
     dlgOpenMusicFile: TOpenDialog;
+    shpMood: TShape;
     tmrWebControl: TTimer;
     tmrPlaying: TTimer;
     procedure btnNextClick(Sender: TObject);
@@ -44,6 +47,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure grpMoodItemClick(Sender: TObject; Index: integer);
     procedure mnuSettingsClick(Sender: TObject);
+    procedure shpMoodPaint(Sender: TObject);
     procedure tmrPlayingTimer(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure pbLevelSoftContextPopup(Sender: TObject; MousePos: TPoint;
@@ -55,6 +59,7 @@ type
     FPlaylistPos: integer;
     FWebControl: TSimpleWebControl;
     frmSearch: TfrmSearch;
+    FMoodMin, FMoodMax: double;
 
     function AddFileToPlaylist(Filename: string): boolean;
     function GetPlaylist: string;
@@ -62,6 +67,7 @@ type
     function GetHost: string;
     function GetPort: string;
     procedure SaveSettings;
+    procedure ShadeTShapeArea(Shape: TShape; Min, Max: Double);
     procedure ToggleMute;
     procedure UnMute;
     procedure UpdatePlaying;
@@ -254,6 +260,11 @@ begin
   tmrPlaying.Enabled := True;
 end;
 
+procedure TfrmMain.shpMoodPaint(Sender: TObject);
+begin
+  ShadeTShapeArea(shpMood, FMoodMin, FMoodMax);
+end;
+
 function TfrmMain.AddFileToPlaylist(Filename: string): boolean;
 begin
   Result := MpcAddFileToPlaylist(GetHost, GetPort, Filename);
@@ -345,7 +356,6 @@ end;
 procedure TfrmMain.FormActivate(Sender: TObject);
 var
    Cfg: TIniFile;
-   i, Min, Max: integer;
 begin
   try
     Cfg := TIniFile.Create(GetUserDir + '.music-skip.conf');
@@ -365,7 +375,7 @@ procedure TfrmMain.SaveSettings;
 var
   Cfg: TIniFile;
   F : TextFile;
-  Min, Max, i, Mood, Range: integer;
+  Mood, Range: integer;
   Soft, Hard: double;
 begin
 
@@ -431,6 +441,10 @@ begin
   WriteLn(f, FloatToStr(Hard));
   CloseFile(f);
 
+  FMoodMin := Soft / 20;
+  FMoodMax := Hard / 20;
+  shpMood.Update;
+
   lblMood.Caption := Format('%d, %d', [Round(Soft), Round(Hard)]);
 
   try
@@ -471,7 +485,7 @@ end;
 
 procedure TfrmMain.tmrWebControlTimer(Sender: TObject);
 var
-  MoodIndex, i: integer;
+  MoodIndex: integer;
   Command: TRemoteCommand;
 begin
   tmrWebControl.Enabled := False;
@@ -504,6 +518,33 @@ begin
   end;
 
   tmrWebControl.Enabled := True;
+end;
+
+procedure TfrmMain.ShadeTShapeArea(Shape: TShape; Min, Max: Double);
+var
+  ShadedRect: TRect;
+  MinX, MaxX: Integer;
+begin
+  // Ensure min and max are within the range [0, 1]
+  if Min < 0 then Min := 0;
+  if Max > 1 then Max := 1;
+
+  // Calculate the pixel positions based on min and max
+  MinX := Round(Min * Shape.Width);
+  MaxX := Round(Max * Shape.Width);
+
+  // Clear the shape before shading
+  Shape.Canvas.Brush.Color := $00343436; // or any background color
+  Shape.Canvas.FillRect(Rect(0, 0, Shape.Width, Shape.Height));
+
+  // Set the brush color for shading
+  Shape.Canvas.Brush.Color := clGray; // or any shading color
+
+  // Define the shaded rectangle
+  ShadedRect := Rect(MinX, 0, MaxX, Shape.Height);
+
+  // Draw the shaded area
+  Shape.Canvas.FillRect(ShadedRect);
 end;
 
 end.

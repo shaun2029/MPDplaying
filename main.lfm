@@ -2725,7 +2725,6 @@ object frmMain: TfrmMain
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000
   }
-  KeyPreview = True
   Menu = mMenu
   OnActivate = FormActivate
   OnClose = FormClose
@@ -2794,14 +2793,37 @@ object frmMain: TfrmMain
       ParentFont = False
     end
     object lblMood: TLabel
-      Left = 8
+      Left = 112
       Height = 14
-      Top = 375
+      Top = 316
       Width = 27
       Caption = 'mood'
       Font.Height = 10
       ParentColor = False
       ParentFont = False
+    end
+    object shpMood: TShape
+      Left = 8
+      Height = 25
+      Top = 336
+      Width = 241
+      Brush.Color = 3421238
+      OnPaint = shpMoodPaint
+    end
+    object Label1: TLabel
+      Left = 8
+      Height = 17
+      Top = 316
+      Width = 27
+      Caption = 'Light'
+    end
+    object Label2: TLabel
+      Left = 197
+      Height = 17
+      Top = 316
+      Width = 48
+      Alignment = taRightJustify
+      Caption = 'Moshing'
     end
   end
   object mmQueued: TMemo
@@ -2858,7 +2880,7 @@ object frmMain: TfrmMain
   end
   object grpMood: TRadioGroup
     Left = 680
-    Height = 353
+    Height = 288
     Top = 32
     Width = 112
     AutoFill = True
@@ -2870,7 +2892,7 @@ object frmMain: TfrmMain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 335
+    ClientHeight = 270
     ClientWidth = 110
     Items.Strings = (
       'Light'
@@ -2879,13 +2901,13 @@ object frmMain: TfrmMain
       'Rocking'
       'Moshing'
     )
-    OnClick = rgpMoodSelectionChanged
+    OnSelectionChanged = rgpMoodSelectionChanged
     ParentBackground = False
     TabOrder = 8
   end
   object grpMoodRange: TRadioGroup
     Left = 808
-    Height = 353
+    Height = 288
     Top = 32
     Width = 112
     AutoFill = True
@@ -2897,7 +2919,7 @@ object frmMain: TfrmMain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 335
+    ClientHeight = 270
     ClientWidth = 110
     Items.Strings = (
       'Small'
@@ -2906,7 +2928,7 @@ object frmMain: TfrmMain
       'Very Large'
       'Maximum'
     )
-    OnClick = rgpMoodSelectionChanged
+    OnSelectionChanged = rgpMoodSelectionChanged
     ParentBackground = False
     TabOrder = 9
   end

@@ -64,6 +64,11 @@
             <OtherUnitFiles Value="lnet/lib;synapse/source/lib"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="Delphi"/>
+            </SyntaxOptions>
+          </Parsing>
           <CodeGeneration>
             <SmartLinkUnit Value="True"/>
             <SmallerCode Value="True"/>
@@ -107,7 +112,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="9">
       <Unit0>
         <Filename Value="MPDplaying.pas"/>
         <IsPartOfProject Value="True"/>
@@ -152,6 +157,11 @@
         <Filename Value="mpd.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit7>
+      <Unit8>
+        <Filename Value="musicskip.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MusicSkip"/>
+      </Unit8>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

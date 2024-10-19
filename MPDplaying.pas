@@ -8,7 +8,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, main, Settings, webcontrol, PlayList, mpc,
-  VolumeControl
+  VolumeControl, MusicSkip
   { you can add units after this };
 
 {$R *.res}

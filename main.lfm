@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
-  Left = 2433
-  Height = 478
-  Top = 275
+  Left = 2353
+  Height = 578
+  Top = 284
   Width = 940
   BorderStyle = bsSingle
   Caption = 'MPD Playing'
-  ClientHeight = 478
+  ClientHeight = 578
   ClientWidth = 940
   Color = clBlack
   Icon.Data = {
@@ -2808,6 +2808,10 @@ object frmMain: TfrmMain
       Top = 336
       Width = 241
       Brush.Color = 3421238
+      OnDragOver = shpMoodDragOver
+      OnMouseDown = shpMoodMouseDown
+      OnMouseMove = shpMoodMouseMove
+      OnMouseUp = shpMoodMouseUp
       OnPaint = shpMoodPaint
     end
     object Label1: TLabel
@@ -2878,38 +2882,11 @@ object frmMain: TfrmMain
     ParentFont = False
     TabOrder = 7
   end
-  object grpMood: TRadioGroup
+  object grpMoodRange: TRadioGroup
     Left = 680
     Height = 288
     Top = 32
-    Width = 112
-    AutoFill = True
-    Caption = 'Mood'
-    ChildSizing.LeftRightSpacing = 6
-    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-    ChildSizing.EnlargeVertical = crsHomogenousChildResize
-    ChildSizing.ShrinkHorizontal = crsScaleChilds
-    ChildSizing.ShrinkVertical = crsScaleChilds
-    ChildSizing.Layout = cclLeftToRightThenTopToBottom
-    ChildSizing.ControlsPerLine = 1
-    ClientHeight = 270
-    ClientWidth = 110
-    Items.Strings = (
-      'Light'
-      'Mellow'
-      'Rock'
-      'Rocking'
-      'Moshing'
-    )
-    OnSelectionChanged = rgpMoodSelectionChanged
-    ParentBackground = False
-    TabOrder = 8
-  end
-  object grpMoodRange: TRadioGroup
-    Left = 808
-    Height = 288
-    Top = 32
-    Width = 112
+    Width = 240
     AutoFill = True
     Caption = 'Mood Range'
     ChildSizing.LeftRightSpacing = 6
@@ -2920,17 +2897,20 @@ object frmMain: TfrmMain
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 270
-    ClientWidth = 110
+    ClientWidth = 238
     Items.Strings = (
       'Small'
       'Medium'
       'Large'
       'Very Large'
+      'Extra Large'
+      'Extreme'
       'Maximum'
     )
+    OnClick = grpMoodRangeClick
     OnSelectionChanged = rgpMoodSelectionChanged
     ParentBackground = False
-    TabOrder = 9
+    TabOrder = 8
   end
   object tmrPlaying: TTimer
     Interval = 5000

@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Menus, ComCtrls, Unix,
   Process, Settings, IniFiles, webcontrol, Mpc, Types, PlayList, LCLType,
-  VolumeControl;
+  VolumeControl, MusicSkip;
 
 type
 
@@ -20,7 +20,6 @@ type
     btnPrev: TBitBtn;
     btnNext: TBitBtn;
     GroupBox1: TGroupBox;
-    grpMood: TRadioGroup;
     grpMoodRange: TRadioGroup;
     Label1: TLabel;
     Label2: TLabel;
@@ -46,7 +45,16 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure grpMoodItemClick(Sender: TObject; Index: integer);
+    procedure grpMoodRangeClick(Sender: TObject);
     procedure mnuSettingsClick(Sender: TObject);
+    procedure shpMoodDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure shpMoodMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure shpMoodMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure shpMoodMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure shpMoodPaint(Sender: TObject);
     procedure tmrPlayingTimer(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -59,7 +67,7 @@ type
     FPlaylistPos: integer;
     FWebControl: TSimpleWebControl;
     frmSearch: TfrmSearch;
-    FMoodMin, FMoodMax: double;
+    FMoodWidth, FMoodMid: double;
 
     function AddFileToPlaylist(Filename: string): boolean;
     function GetPlaylist: string;
@@ -79,7 +87,7 @@ type
   end;
 
 const
-  VERSION='v1.2.0';
+  VERSION='v2.0.0';
 
 var
   frmMain: TfrmMain;
@@ -260,9 +268,40 @@ begin
   tmrPlaying.Enabled := True;
 end;
 
-procedure TfrmMain.shpMoodPaint(Sender: TObject);
+procedure TfrmMain.shpMoodDragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
 begin
-  ShadeTShapeArea(shpMood, FMoodMin, FMoodMax);
+end;
+
+procedure TfrmMain.shpMoodMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  FMoodMid := X / shpMood.Width;
+  FMoodMid := Round(FMoodMid * 20) / 20;
+  if FMoodMid > 1 then FMoodMid := 1;
+  if FMoodMid < 0 then FMoodMid := 0;
+
+  SaveSettings;
+end;
+
+procedure TfrmMain.shpMoodMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+end;
+
+procedure TfrmMain.shpMoodMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+end;
+
+procedure TfrmMain.shpMoodPaint(Sender: TObject);
+var
+  Min, Max: Double;
+begin
+  Min := FMoodMid - FMoodWidth / 2;
+  Max := FMoodMid + FMoodWidth / 2;
+
+  ShadeTShapeArea(shpMood, Min, Max);
 end;
 
 function TfrmMain.AddFileToPlaylist(Filename: string): boolean;
@@ -355,121 +394,122 @@ end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
 var
-   Cfg: TIniFile;
+  Cfg: TIniFile;
+  MusicSkip: TMusicSkip;
+  Range, Min, Max: Double;
+  URL: String;
 begin
-  try
-    Cfg := TIniFile.Create(GetUserDir + '.music-skip.conf');
-    grpMood.ItemIndex := Cfg.ReadInteger('Settings', 'Mood', 0);
-    grpMoodRange.ItemIndex := Cfg.ReadInteger('Settings', 'Range', 0);
+  URL := Format('http://%s:5000', [GetHost]);
+  MusicSkip := TMusicSkip.Create(URL);
 
-    Cfg.Free;
-  except
-    on E: Exception do
-    begin
-      ShowMessage('Exception: ' + E.Message);
-    end;
+  if MusicSkip.GetSkipValues(Min, Max) then
+  begin
+    lblMood.Caption := Format('%.1f - %.1f', [Min*10, Max*10]);
+    WriteLn('Skip values were successfully queried.')
+  end
+  else
+  begin
+    Min := 0;
+    Max := 10;
+    lblMood.Caption := 'error';
+    WriteLn('Failed to get skip values.');
   end;
+
+  MusicSkip.Free;
+
+  Range := Abs(Max - Min);
+  FMoodMid := Round((Min + Range / 2) * 20) / 20;
+  if Range < 0.25 then grpMoodRange.ItemIndex := 0
+  else if Range < 0.35 then grpMoodRange.ItemIndex := 1
+  else if Range < 0.45 then grpMoodRange.ItemIndex := 2
+  else if Range < 0.55 then grpMoodRange.ItemIndex := 3
+  else if Range < 0.65 then grpMoodRange.ItemIndex := 4
+  else if Range < 0.75 then grpMoodRange.ItemIndex := 5
+  else grpMoodRange.ItemIndex := 6;
 end;
 
 procedure TfrmMain.SaveSettings;
 var
   Cfg: TIniFile;
   F : TextFile;
-  Mood, Range: integer;
-  Soft, Hard: double;
+  Range: integer;
+  MusicSkip: TMusicSkip;
+  URL: String;
+  Min, Max: Double;
 begin
-
-  Mood := grpMood.ItemIndex;
   Range := grpMoodRange.ItemIndex;
 
-  case Mood of
-    0:
-    begin
-      case Range of
-        0: begin Soft := 0; Hard := 6; end;
-        1: begin Soft := 0; Hard := 10; end;
-        2: begin Soft := 0; Hard := 12; end;
-        3: begin Soft := 0; Hard := 14; end;
-        else begin Soft := 0; Hard := 20; end;
-      end;
-    end;
-    1:
-    begin
-      case Range of
-        0: begin Soft := 6; Hard := 10; end;
-        1: begin Soft := 6; Hard := 12; end;
-        2: begin Soft := 6; Hard := 14; end;
-        3: begin Soft := 6; Hard := 15; end;
-        else begin Soft := 6; Hard := 20; end;
-      end;
-    end;
-    2:
-    begin
-      case Range of
-        0: begin Soft := 8; Hard := 12; end;
-        1: begin Soft := 10; Hard := 14; end;
-        2: begin Soft := 10; Hard := 15; end;
-        3: begin Soft := 10; Hard := 16; end;
-        else begin Soft := 10; Hard := 20; end;
-      end;
-    end;
-    3:
-    begin
-      case Range of
-        0: begin Soft := 10; Hard := 14; end;
-        1: begin Soft := 11; Hard := 15; end;
-        2: begin Soft := 12; Hard := 16; end;
-        3: begin Soft := 12; Hard := 17; end;
-        else begin Soft := 12; Hard := 20; end;
-      end;
-    end;
-    else
-    begin
-      case Range of
-        0: begin Soft := 11; Hard := 15; end;
-        1: begin Soft := 12; Hard := 16; end;
-        2: begin Soft := 13; Hard := 17; end;
-        3: begin Soft := 14; Hard := 18; end;
-        else begin Soft := 15; Hard := 20; end;
-      end;
-    end;
+  case Range of
+    0: FMoodWidth := 0.2;
+    1: FMoodWidth := 0.3;
+    2: FMoodWidth := 0.4;
+    3: FMoodWidth := 0.5;
+    4: FMoodWidth := 0.6;
+    5: FMoodWidth := 0.7;
+    6: FMoodWidth := 0.8;
+    else FMoodWidth := 1;
   end;
 
   AssignFile(f,GetUserDir + '.music-skip');
   Rewrite(f);
-  WriteLn(f, FloatToStr(Soft));
-  WriteLn(f, FloatToStr(Hard));
+  WriteLn(f, FloatToStr(FMoodWidth));
+  WriteLn(f, FloatToStr(FMoodMid));
   CloseFile(f);
 
-  FMoodMin := Soft / 20;
-  FMoodMax := Hard / 20;
   shpMood.Update;
 
-  lblMood.Caption := Format('%d, %d', [Round(Soft), Round(Hard)]);
+  Min := FMoodMid - FMoodWidth / 2;
+  Max := FMoodMid + FMoodWidth / 2;
 
-  try
-    Cfg := TIniFile.Create(GetUserDir + '.music-skip.conf');
-    Cfg.WriteInteger('Settings', 'Mood', grpMood.ItemIndex);
-    Cfg.WriteInteger('Settings', 'Range', grpMoodRange.ItemIndex);
-    Cfg.Free;
-  except
-    on E: Exception do
+  if Min < 0 then Min := 0;
+  if Max > 1 then Max := 1;
+
+  if Abs(Min - Max) < 0.2 then
+  begin
+    Min := Min - 0.1;
+    Max := Max + 0.1;
+    if Min < 0 then
     begin
-      ShowMessage('Exception: ' + E.Message);
+      Min := 0; Max := 0.2
+    end;
+    if Max > 1 then
+    begin
+      Min := 0.8;
+      Max := 1.0;
     end;
   end;
+
+  URL := Format('http://%s:5000', [GetHost]);
+  MusicSkip := TMusicSkip.Create(URL);
+
+  if MusicSkip.SetSkipValues(Min, Max) then
+  begin
+    lblMood.Caption := Format('%.1f - %.1f', [Min*10, Max*10]);
+    WriteLn('Skip values were set successfully.')
+  end
+  else
+  begin
+    lblMood.Caption := 'error';
+    WriteLn('Failed to set skip values.');
+  end;
+
+  MusicSkip.Free;
 end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   FWebControl.Free;
-  SaveSettings;
   FPlaylist.Free;
 end;
 
 procedure TfrmMain.grpMoodItemClick(Sender: TObject; Index: integer);
 begin
   SaveSettings;
+end;
+
+procedure TfrmMain.grpMoodRangeClick(Sender: TObject);
+begin
+
 end;
 
 procedure TfrmMain.pbLevelSoftContextPopup(Sender: TObject; MousePos: TPoint;
@@ -504,6 +544,7 @@ begin
 
     if (MoodIndex >= 0) and (MoodIndex < 6) then
     begin
+{
       case MoodIndex of
         0: begin grpMood.ItemIndex := 0; grpMoodRange.ItemIndex := 2; end;
         1: begin grpMood.ItemIndex := 1; grpMoodRange.ItemIndex := 2; end;
@@ -512,7 +553,7 @@ begin
         4: begin grpMood.ItemIndex := 4; grpMoodRange.ItemIndex := 2; end;
         else begin grpMood.ItemIndex := 4; grpMoodRange.ItemIndex := 3; end;
       end;
-
+}
       SaveSettings;
     end;
   end;

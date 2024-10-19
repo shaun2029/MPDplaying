@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
-  Left = 2353
-  Height = 578
-  Top = 284
+  Left = 2282
+  Height = 458
+  Top = 236
   Width = 940
   BorderStyle = bsSingle
   Caption = 'MPD Playing'
-  ClientHeight = 578
+  ClientHeight = 458
   ClientWidth = 940
   Color = clBlack
   Icon.Data = {

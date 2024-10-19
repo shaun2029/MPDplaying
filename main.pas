@@ -299,7 +299,7 @@ var
   Min, Max: Double;
 begin
   Min := FMoodMid - FMoodWidth / 2;
-  Max := FMoodMid + FMoodWidth / 2;
+  Max := Min + FMoodWidth;
 
   ShadeTShapeArea(shpMood, Min, Max);
 end;
@@ -446,7 +446,6 @@ begin
     3: FMoodWidth := 0.5;
     4: FMoodWidth := 0.6;
     5: FMoodWidth := 0.7;
-    6: FMoodWidth := 0.8;
     else FMoodWidth := 1;
   end;
 
@@ -459,15 +458,14 @@ begin
   shpMood.Update;
 
   Min := FMoodMid - FMoodWidth / 2;
-  Max := FMoodMid + FMoodWidth / 2;
+  Max := Min + FMoodWidth;
 
   if Min < 0 then Min := 0;
   if Max > 1 then Max := 1;
 
-  if Abs(Min - Max) < 0.2 then
+  if Abs(Min - Max) < 0.19 then
   begin
-    Min := Min - 0.1;
-    Max := Max + 0.1;
+    Max := Min + 0.2;
     if Min < 0 then
     begin
       Min := 0; Max := 0.2
@@ -504,7 +502,6 @@ end;
 
 procedure TfrmMain.grpMoodItemClick(Sender: TObject; Index: integer);
 begin
-  SaveSettings;
 end;
 
 procedure TfrmMain.grpMoodRangeClick(Sender: TObject);
@@ -542,7 +539,7 @@ begin
 
     MoodIndex := Ord(Command) - Ord(rcomMoodLight);
 
-    if (MoodIndex >= 0) and (MoodIndex < 6) then
+    if (MoodIndex >= 0) and (MoodIndex <= 6) then
     begin
 {
       case MoodIndex of
@@ -553,8 +550,8 @@ begin
         4: begin grpMood.ItemIndex := 4; grpMoodRange.ItemIndex := 2; end;
         else begin grpMood.ItemIndex := 4; grpMoodRange.ItemIndex := 3; end;
       end;
-}
       SaveSettings;
+}
     end;
   end;
 
